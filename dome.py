@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 #------------------------------------
-#Author(s): Amanda Bacon			-
+#Author(s): Amanda Bacon	    -
 #Automation of Stickney Observatory -
 #------------------------------------
 
@@ -55,6 +55,36 @@ except KeyboardInterrupt:
 
 #reset GPIO settings
 GPIO.cleanup()
+
+#pseudo-code of dome operation
+
+#Raised exception when trying to slew to an invalid azimuth angle
+class InvalidPositionException():
+	#takes this from telescope keypad
+	#string? int?
+
+#Initial start-up position of dome
+class Dome():
+	#park position coordinates
+	#timeouts
+
+	#Query if the dome is currently slewing
+#	def isSlewing(self):
+		#return True if the dome is slewing, False otherwise.
+		#above is a boolean
+
+#synchronization with the 16" telescope
+class DomeTelescope(Dome):
+	#sync dome with telescope
+	def beginSync(self):
+
+	#dome-telescope synchronization complete		
+	def completeSync(self):
+	
+	#synchronized tracking with telescope	
+	def track(self):
+	
+
 #==========================================================================
 #For book keeping purposes
 #Get time
