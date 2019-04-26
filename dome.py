@@ -58,6 +58,8 @@ GPIO.cleanup()
 
 #pseudo-code of dome operation
 
+Mode = Enum("Stand","Track")
+
 #Raised exception when trying to slew to an invalid azimuth angle
 class InvalidPositionException():
 	#takes this from telescope keypad
@@ -73,6 +75,10 @@ class Dome():
 		#return True if the dome is slewing, False otherwise.
 		#above is a boolean
 
+	#get the dome's current position
+#	def currentPosition(self, position):
+		#return coordinates in degrees, lon/lat
+
 #synchronization with the 16" telescope
 class DomeTelescope(Dome):
 	#sync dome with telescope
@@ -84,6 +90,24 @@ class DomeTelescope(Dome):
 	#synchronized tracking with telescope	
 	def track(self):
 	
+	#check dome is tracking
+	def isTracking(self):
+		#returns True if dome is tracking, False otherwise
+		#above is a boolean
+
+	#dome only move when asked
+	def stall(self):
+	
+	#If dome is tracking with telescope, sync dome position with scope position
+	def TelescopePos(self):
+	
+	#get status of dome
+	def domeStatus(self):
+		#return if dome is Stall or tracking or in dome mode
+
+	#get azimuth (Az)
+	def getAz(self):
+		#return dome's current azimuth in decimal degrees
 
 #==========================================================================
 #For book keeping purposes
