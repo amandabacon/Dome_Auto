@@ -31,39 +31,45 @@ pin_list = [17,32]
 
 for i in pin_list:
 	GPIO.setup(i, GPIO.OUT)
-#	GPIO.output(i, GPIO.HIGH)
+	GPIO.output(i, GPIO.HIGH)
 time.sleep(2)
 
 try:
 	GPIO.output(17, GPIO.LOW)
 	time.sleep(2)
-	GPIO.output(32. GPIO.LOW)
+	GPIO.output(32, GPIO.LOW)
 	time.sleep(2)
 	GPIO.cleanup()
 except KeyboardInterrupt:
 	print('Quit')
 
-#while True:
+while True:
 	# Turn all relays ON
-#	GPIO.output(17, GPIO.HIGH)
-#	GPIO.output(32, GPIO.HIGH))
-#	sleep(5) 
+	GPIO.output(17, GPIO.HIGH)
+	GPIO.output(32, GPIO.HIGH))
+	sleep(5) 
 	# Turn all relays OFF
-#	GPIO.output(17, GPIO.LOW)
-#	GPIO.output(32, GPIO.LOW)
-#	sleep(5)
+	GPIO.output(17, GPIO.LOW)
+	GPIO.output(32, GPIO.LOW)
+	sleep(5)
 
 #reset GPIO settings
 GPIO.cleanup()
 
 #pseudo-code of dome operation
 
-Mode = Enum("Stand","Track")
+Mode = enum("Stand","Track")
 
 #Raised exception when trying to slew to an invalid azimuth angle
 class InvalidPositionException():
 	#takes this from telescope keypad
-	#string? int?
+	#string? int? Telescope pad: “Outside Safe Zone, Slewing canceled...”
+	print("Error: invalid azimuth angle.")
+
+class InvalidHorizonException():
+	#takes from telescope
+	#“Object Below Horizon Limit. Altitude:[Value]”.
+	print("Object Below Horizon Limit. Altitude: ", value)
 
 #Initial start-up position of dome
 class Dome():
@@ -71,12 +77,12 @@ class Dome():
 	#timeouts
 
 	#Query if the dome is currently slewing
-#	def isSlewing(self):
+	def isSlewing(self):
 		#return True if the dome is slewing, False otherwise.
 		#above is a boolean
 
 	#get the dome's current position
-#	def currentPosition(self, position):
+	def currentPosition(self, position):
 		#return coordinates in degrees, lon/lat
 
 #synchronization with the 16" telescope
