@@ -56,6 +56,51 @@ while True:
 #reset GPIO settings
 GPIO.cleanup()
 
+#toggle switch
+GPIO.setup(23, GPIO.IN)
+GPIO.setup(24, GPIO.IN)
+
+while True:
+	if GPIO.input(23) == 1:
+		print("Switch on the left")
+	if GPIO.input(24) == 1:
+		print("Switch on the right")
+	else:
+		print("Switch in center")
+	time.sleep(1)
+
+#LED buttons
+try: 
+	while True:
+		button_status = GPIO.input(#)
+		if button_status == False:
+			GPIO.output(##, True)
+			print("Button pressed")
+			time.sleep(0.2)
+		else:
+			GPIO.output(##, False)
+
+except:
+	GPIO.cleanup()
+
+#LED buttons 2
+try:
+	while True:
+		button_status = GPIO.input(#)
+		if button_status == GPIO.HIGH:
+			print("Button pressed")
+		
+except:
+	GPIO.cleanup()
+
+#IR beam break--object needs to block IR light
+GPIO.setup(#, GPIO.IN)
+	while True:
+		if(GPIO.input(#) == 1):
+			print("Beam inteference")
+		if(GPIO.input(#) == 0):
+			print("yeah")
+
 #pseudo-code of dome operation
 
 Mode = enum("Stand","Track")
