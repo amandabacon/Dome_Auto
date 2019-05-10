@@ -21,7 +21,7 @@ site_latitude = 42.9207 #north
 
 #limit angles: 0 (north), 90 (east), 180 (south), 270 (west), 360 (north)
 min_azimuth = 0
-max_azimuth = 270
+max_azimuth = 270 #actually 360
 
 #get azimuth information from telescope
 
@@ -99,7 +99,31 @@ GPIO.setup(#, GPIO.IN)
 		if(GPIO.input(#) == 1):
 			print("Beam inteference")
 		if(GPIO.input(#) == 0):
-			print("yeah")
+			print("solid")
+
+#logic for IR beam break---teeth
+try:
+	notches = 0
+	while notches < 361:
+		if(GPIO.input(#) == False):
+		#if(GPIO.input() == 1):
+			notches == notches + 1
+			print(notches)
+		else:
+			notches = notches
+except KeyboardInterrupt:
+	GPIO.cleanup()
+
+#logic for IR beam break--home
+initial_positon = [0]
+final_position = [359]
+try:
+	if(initial_position != 0):
+		print("Not in home position. Going to home position")
+	else:
+		print("In home position")
+
+except:
 
 #pseudo-code of dome operation
 
