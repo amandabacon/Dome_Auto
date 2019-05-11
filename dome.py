@@ -25,7 +25,7 @@ dome_radius = 1.6002 #meters, or 63"
 min_azimuth = 0
 max_azimuth = 360
 
-#set relay pins (6 relays--each need VCC,GRND,CNTRL)
+#set relay pins (6 relays--each need VCC,GND,CNTRL)
 pin_list = [8,10,12,16,18,22]
 
 for i in pin_list:
@@ -86,8 +86,8 @@ GPIO.cleanup()
 #	time.sleep(1)
 #END OF NOT TESTED
 
-#Need four of these: manual, automate, STOP, home: 11,13,15,19
-#LED buttons--tested and work--need GRND and 3.3 V
+#Need four of these: backward,forward,STOP,home: 11,13,15,19
+#LED buttons--tested and work--need GND and 3.3 V
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
@@ -101,7 +101,7 @@ try:
 except:
 	GPIO.cleanup()
 
-#LED buttons other option--tested and work--need GRND and 3.3 V
+#LED buttons other option--tested and work--need GND and 3.3 V
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try:
 	while True:
@@ -116,7 +116,7 @@ except:
 
 #NOT TESTED
 #IR beam break--object needs to block IR light--receiver with 3 wires,
-#transmitter two wires--need 10K Ohm resistor, ground, and VCC
+#transmitter two wires--need 10K Ohm resistor,GND,VCC
 #GPIO.setup(7, GPIO.IN)
 #	while True:
 #		if(GPIO.input(7) == 1):
