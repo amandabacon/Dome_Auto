@@ -8,9 +8,10 @@
 import time
 from datetime import datetime
 import RPi.GPIO as GPIO
+import smbus
 
 #set up mode for GPIO
-GPIO.setmode(GPIO.board)
+GPIO.setmode(GPIO.BOARD)
 
 #Azimuth information from 16" dome telescope
 site_longitude = 73.2416 #west
@@ -69,36 +70,40 @@ while True:
 		print("Switch in center")
 	time.sleep(1)
 
-#LED buttons
+#LED buttons--tested and works--needs ground and 3.3 V
+GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
-		button_status = GPIO.input(#)
+		button_status = GPIO.input(11)
 		if button_status == False:
-			GPIO.output(##, True)
-			print("Button pressed")
+			print("Pressed")
 			time.sleep(0.2)
 		else:
-			GPIO.output(##, False)
+			print("Not pressed")
 
 except:
 	GPIO.cleanup()
 
-#LED buttons 2
+#LED buttons other option--tested and works--needs ground and 3.3 V
+GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try:
 	while True:
-		button_status = GPIO.input(#)
+		button_status = GPIO.input(11)
 		if button_status == GPIO.HIGH:
-			print("Button pressed")
+			print("Not pressed")
+		else:
+			print("Pressed")
 		
 except:
 	GPIO.cleanup()
 
-#IR beam break--object needs to block IR light
-GPIO.setup(#, GPIO.IN)
+#IR beam break--object needs to block IR light--receiver with 3 wires,
+#transmitter two wires--need 10K Ohm resistor, ground, and VCC
+GPIO.setup(7, GPIO.IN)
 	while True:
-		if(GPIO.input(#) == 1):
+		if(GPIO.input(7) == 1):
 			print("Beam inteference")
-		if(GPIO.input(#) == 0):
+		if(GPIO.input(7) == 0):
 			print("solid")
 
 #logic for IR beam break---teeth
