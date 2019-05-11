@@ -5,6 +5,7 @@
 #Automation of Stickney Observatory -
 #------------------------------------
 
+#import modules below
 import time
 from datetime import datetime
 import RPi.GPIO as GPIO
@@ -17,60 +18,76 @@ GPIO.setmode(GPIO.BOARD)
 site_longitude = 73.2416 #west
 site_latitude = 42.9207 #north
 
-#radius of dome
-#dome_radius = 
+#radius of dome--diameter 10'6" or 126"
+dome_radius = 1.6002 #meters, or 63"
 
 #limit angles: 0 (north), 90 (east), 180 (south), 270 (west), 360 (north)
 min_azimuth = 0
-max_azimuth = 270 #actually 360
+max_azimuth = 360
 
-#get azimuth information from telescope
-
-
-#set relay information
-pin_list = [17,32]
+#set relay pins (6 relays--each need VCC,GRND,CNTRL)
+pin_list = [8,10,12,16,18,22]
 
 for i in pin_list:
-	GPIO.setup(i, GPIO.OUT)
+	GPIO.setup(i, GPIO.OUT) #should this be IN?
 	GPIO.output(i, GPIO.HIGH)
-time.sleep(2)
+time.sleep(1)
 
 try:
-	GPIO.output(17, GPIO.LOW)
-	time.sleep(2)
-	GPIO.output(32, GPIO.LOW)
-	time.sleep(2)
-	GPIO.cleanup()
+	GPIO.output(8, GPIO.LOW)
+	time.sleep(1)
+	GPIO.output(10, GPIO.LOW)
+	time.sleep(1)
+	GPIO.output(12, GPIO.LOW)
+	time.sleep(1)
+	GPIO.output(16, GPIO.LOW)
+	time.sleep(1)
+	GPIO.output(18, GPIO.LOW) #hardware safety relay
+	time.sleep(1)
+	GPIO.output(22, GPIO.LOW) #hardware safety relay
+	time.sleep(1)
 except KeyboardInterrupt:
 	print('Quit')
+	GPIO.cleanup()
 
 while True:
 	# Turn all relays ON
-	GPIO.output(17, GPIO.HIGH)
-	GPIO.output(32, GPIO.HIGH))
-	sleep(5) 
+	GPIO.output(8, GPIO.HIGH)
+	GPIO.output(10, GPIO.HIGH)
+	GPIO.output(12, GPIO.HIGH)
+	GPIO.output(16, GPIO.HIGH)
+	GPIO.output(18, GPIO.HIGH) #hardware safety relay
+	GPIO.output(22, GPIO.HIGH) #hardware safety relay
+	sleep(2) 
 	# Turn all relays OFF
-	GPIO.output(17, GPIO.LOW)
-	GPIO.output(32, GPIO.LOW)
-	sleep(5)
+	GPIO.output(8, GPIO.LOW)
+	GPIO.output(10, GPIO.LOW)
+	GPIO.output(12, GPIO.LOW)
+	GPIO.output(16, GPIO.LOW)
+	GPIO.output(18, GPIO.LOW) #hardware safety relay
+	GPIO.output(22, GPIO.LOW) #hardware safety relay
+	sleep(2)
 
 #reset GPIO settings
 GPIO.cleanup()
 
+#NOT TESTED
 #toggle switch
-GPIO.setup(23, GPIO.IN)
-GPIO.setup(24, GPIO.IN)
+#GPIO.setup(23, GPIO.IN)
+#GPIO.setup(24, GPIO.IN)
 
-while True:
-	if GPIO.input(23) == 1:
-		print("Switch on the left")
-	if GPIO.input(24) == 1:
-		print("Switch on the right")
-	else:
-		print("Switch in center")
-	time.sleep(1)
+#while True:
+#	if GPIO.input(23) == 1:
+#		print("Switch on the left")
+#	if GPIO.input(24) == 1:
+#		print("Switch on the right")
+#	else:
+#		print("Switch in center")
+#	time.sleep(1)
+#END OF NOT TESTED
 
-#LED buttons--tested and works--needs ground and 3.3 V
+#Need four of these: manual, automate, STOP, home: 11,13,15,19
+#LED buttons--tested and work--need GRND and 3.3 V
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
@@ -84,7 +101,7 @@ try:
 except:
 	GPIO.cleanup()
 
-#LED buttons other option--tested and works--needs ground and 3.3 V
+#LED buttons other option--tested and work--need GRND and 3.3 V
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try:
 	while True:
@@ -97,38 +114,41 @@ try:
 except:
 	GPIO.cleanup()
 
+#NOT TESTED
 #IR beam break--object needs to block IR light--receiver with 3 wires,
 #transmitter two wires--need 10K Ohm resistor, ground, and VCC
-GPIO.setup(7, GPIO.IN)
-	while True:
-		if(GPIO.input(7) == 1):
-			print("Beam inteference")
-		if(GPIO.input(7) == 0):
-			print("solid")
+#GPIO.setup(7, GPIO.IN)
+#	while True:
+#		if(GPIO.input(7) == 1):
+#			print("Beam inteference")
+#		if(GPIO.input(7) == 0):
+#			print("solid")
 
 #logic for IR beam break---teeth
-try:
-	notches = 0
-	while notches < 361:
-		if(GPIO.input(#) == False):
-		#if(GPIO.input() == 1):
-			notches == notches + 1
-			print(notches)
-		else:
-			notches = notches
-except KeyboardInterrupt:
-	GPIO.cleanup()
+#try:
+#	notches = 0
+#	while notches < 361:
+#		if(GPIO.input(21) == False):
+#		#if(GPIO.input(21) == 1):
+#			notches == notches + 1
+#			print(notches)
+#		else:
+#			notches = notches
+#
+#except KeyboardInterrupt:
+#	GPIO.cleanup()
 
 #logic for IR beam break--home
-initial_positon = [0]
-final_position = [359]
-try:
-	if(initial_position != 0):
-		print("Not in home position. Going to home position")
-	else:
-		print("In home position")
-
-except:
+#initial_positon = [0]
+#final_position = [359]
+#try:
+#	if(initial_position != 0):
+#		print("Not in home position. Going to home position")
+#	else:
+#		print("In home position")
+#
+#except:
+#END OF NOT TESTED
 
 #pseudo-code of dome operation
 
