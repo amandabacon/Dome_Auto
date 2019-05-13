@@ -75,12 +75,17 @@ GPIO.cleanup()
 #toggle switch
 #GPIO.setup(23, GPIO.IN)
 #GPIO.setup(24, GPIO.IN)
-
+#GPIO.setup(x, GPIO.OUT) #test led proxy for motor motion, idk what pins to use 
+#GPIO.setup(y, GPIO.OUT) #test led proxy for motor motion
 #while True:
 #	if GPIO.input(23) == 1:
 #		print("Switch on the left")
+#		GPIO.output(x, GPIO.HIGH) #led proxy test
+#		GPIO.output(y, GPIO.LOW) #led proxy test
 #	if GPIO.input(24) == 1:
 #		print("Switch on the right")
+#		GPIO.output(x, GPIO.LOW) #led proxy test
+#		GPIO.output(y, GPIO.HIGH) #led proxy test
 #	else:
 #		print("Switch in center")
 #	time.sleep(1)
