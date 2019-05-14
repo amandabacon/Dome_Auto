@@ -10,6 +10,7 @@ import time
 from datetime import datetime
 import RPi.GPIO as GPIO
 import smbus
+import sys
 
 #set up mode for GPIO
 GPIO.setmode(GPIO.BOARD)
@@ -140,30 +141,21 @@ GPIO.setup(19, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
 		button_status_STOP = GPIO.input(19)
-		if button_status_STOP == False:
-			print("Pressed")
+		if button_status_STOP == True:
+			print("Not Pressed")
 			time.sleep(0.2)
-		else:
-			print("Not pressed")
+		if button_status_STOP == False:
+			print("Emergency Stop!")
+			sys.exit()
 
 except:
 	GPIO.cleanup()	
 
-#NOT TESTED
-#STOP logic
-#def e_STOP():
-#	print("Emergency stop button pressed")
-#	sys.exit()
-
-#if stop.is_active == TRUE:
-#	e_STOP()
-	
 #STOP logic #2
-#try:
-#	GPIO.wait_for_edge(19, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
+try:
+	GPIO.wait_for_edge(19, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
 except KeyboardInterrupt:
-#	GPIO.cleanup()
-#END OF NOT TESTED
+	GPIO.cleanup()
 	
 #LED buttons other option--tested and work--need GND and 3.3 V
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
