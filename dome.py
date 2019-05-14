@@ -148,19 +148,21 @@ try:
 except:
 	GPIO.cleanup()	
 
+#NOT TESTED
 #STOP logic
-def e_STOP():
-	print("Emergency stop button pressed")
-	sys.exit()
+#def e_STOP():
+#	print("Emergency stop button pressed")
+#	sys.exit()
 
-if stop.is_active == TRUE:
-	e_STOP()
+#if stop.is_active == TRUE:
+#	e_STOP()
 	
 #STOP logic #2
-try:
-	GPIO.wait_for_edge(19, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
+#try:
+#	GPIO.wait_for_edge(19, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
 except KeyboardInterrupt:
-	GPIO.cleanup()
+#	GPIO.cleanup()
+#END OF NOT TESTED
 	
 #LED buttons other option--tested and work--need GND and 3.3 V
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
@@ -175,16 +177,16 @@ try:
 except:
 	GPIO.cleanup()
 
-#NOT TESTED
 #IR beam break--object needs to block IR light--receiver with 3 wires,
-#transmitter two wires--need 10K Ohm resistor,GND,VCC
+#transmitter two wires--need 10K Ohm resistor (if not using pull_up_down),GND,VCC
 GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 	while True:
-		if(GPIO.input(7) == 1):
-			print("Beam inteference")
 		if(GPIO.input(7) == 0):
+			print("Beam inteference")
+		if(GPIO.input(7) == 1):
 			print("solid")
 
+#NOT TESTED
 #logic for IR beam break---teeth
 #try:
 #	notches = 0
