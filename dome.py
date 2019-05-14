@@ -26,7 +26,8 @@ min_azimuth = 0
 max_azimuth = 360
 
 #set relay pins (6 relays--each need VCC,GND,CNTRL)
-pin_list = [8,10,12,16,18,22]
+#2 safety relays connected to same GPIO pin via molex cable being twisted
+pin_list = [8,10,12,16,18,22] #extra pin here--only need 5
 
 for i in pin_list:
 	GPIO.setup(i, GPIO.OUT) #should this be IN?
@@ -42,9 +43,9 @@ try:
 	time.sleep(1)
 	GPIO.output(16, GPIO.LOW)
 	time.sleep(1)
-	GPIO.output(18, GPIO.LOW) #hardware safety relay
+	GPIO.output(18, GPIO.LOW) #hardware safety relay--should be same GPIO pin
 	time.sleep(1)
-	GPIO.output(22, GPIO.LOW) #hardware safety relay
+	GPIO.output(22, GPIO.LOW) #hardware safety relay--should be same GPIO pin
 	time.sleep(1)
 except KeyboardInterrupt:
 	print('Quit')
@@ -56,23 +57,23 @@ while True:
 	GPIO.output(10, GPIO.HIGH)
 	GPIO.output(12, GPIO.HIGH)
 	GPIO.output(16, GPIO.HIGH)
-	GPIO.output(18, GPIO.HIGH) #hardware safety relay
-	GPIO.output(22, GPIO.HIGH) #hardware safety relay
+	GPIO.output(18, GPIO.HIGH) #hardware safety relay--should be same pin (A split)
+	GPIO.output(22, GPIO.HIGH) #hardware safety relay--should be same pin (A split)
 	sleep(2) 
 	# Turn all relays OFF
 	GPIO.output(8, GPIO.LOW)
 	GPIO.output(10, GPIO.LOW)
 	GPIO.output(12, GPIO.LOW)
 	GPIO.output(16, GPIO.LOW)
-	GPIO.output(18, GPIO.LOW) #hardware safety relay
-	GPIO.output(22, GPIO.LOW) #hardware safety relay
+	GPIO.output(18, GPIO.LOW) #hardware safety relay--should be same pin (A split)
+	GPIO.output(22, GPIO.LOW) #hardware safety relay--should be same pin (A split)
 	sleep(2)
 
 #reset GPIO settings
 GPIO.cleanup()
 
 #NOT TESTED
-#toggle switch
+#toggle switch for home position--deprecated
 #GPIO.setup(23, GPIO.IN)
 #GPIO.setup(24, GPIO.IN)
 
@@ -87,6 +88,7 @@ GPIO.cleanup()
 #END OF NOT TESTED
 
 #Need four of these: backward,forward,STOP,home: 11,13,15,19
+#HOME button
 #LED buttons--tested and work--need GND and 3.3 V
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
@@ -101,6 +103,65 @@ try:
 except:
 	GPIO.cleanup()
 
+#Counter clockwise button
+#LED buttons--tested and work--need GND and 3.3 V
+GPIO.setup(13, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+try: 
+	while True:
+		button_status_cc = GPIO.input(13)
+		if button_status_cc == False:
+			print("Pressed")
+			time.sleep(0.2)
+		else:
+			print("Not pressed")
+
+except:
+	GPIO.cleanup()
+
+#Clockwise button
+#LED buttons--tested and work--need GND and 3.3 V
+GPIO.setup(15, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+try: 
+	while True:
+		button_status_c = GPIO.input(15)
+		if button_status_c == False:
+			print("Pressed")
+			time.sleep(0.2)
+		else:
+			print("Not pressed")
+
+except:
+	GPIO.cleanup()
+
+#STOP button
+#LED buttons--tested and work--need GND and 3.3 V
+GPIO.setup(19, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+try: 
+	while True:
+		button_status_STOP = GPIO.input(19)
+		if button_status_STOP == False:
+			print("Pressed")
+			time.sleep(0.2)
+		else:
+			print("Not pressed")
+
+except:
+	GPIO.cleanup()	
+
+#STOP logic
+def e_STOP():
+	print("Emergency stop button pressed")
+	sys.exit()
+
+if stop.is_active == TRUE:
+	e_STOP()
+	
+#STOP logic #2
+try:
+	GPIO.wait_for_edge(19, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
+except KeyboardInterrupt:
+	GPIO.cleanup()
+	
 #LED buttons other option--tested and work--need GND and 3.3 V
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try:
@@ -117,12 +178,12 @@ except:
 #NOT TESTED
 #IR beam break--object needs to block IR light--receiver with 3 wires,
 #transmitter two wires--need 10K Ohm resistor,GND,VCC
-#GPIO.setup(7, GPIO.IN)
-#	while True:
-#		if(GPIO.input(7) == 1):
-#			print("Beam inteference")
-#		if(GPIO.input(7) == 0):
-#			print("solid")
+GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+	while True:
+		if(GPIO.input(7) == 1):
+			print("Beam inteference")
+		if(GPIO.input(7) == 0):
+			print("solid")
 
 #logic for IR beam break---teeth
 #try:
