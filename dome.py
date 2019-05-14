@@ -186,6 +186,14 @@ GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 		if(GPIO.input(7) == 1):
 			print("solid")
 
+#IR beam break number 2
+GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+	while True:
+		if(GPIO.input(21) == 0):
+			print("Beam interference #2")
+		if(GPIO.input(21) == 1):
+			print("solid #2")
+
 #NOT TESTED
 #logic for IR beam break---teeth
 #try:
