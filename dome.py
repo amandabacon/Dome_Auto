@@ -135,6 +135,7 @@ except:
 
 #STOP button
 #LED buttons--tested and work--need GND and 3.3 V
+#GND is bottom horizontal pin, 3.3 V is horizontal pin above and off to side of it.
 GPIO.setup(19, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
