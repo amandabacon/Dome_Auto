@@ -188,17 +188,80 @@ GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 			print("solid #2")
 
 #NOT TESTED
-#logic for IR beam break---teeth
-#try:
-#	notches = 0
-#	while notches < 361:
-#		if(GPIO.input(21) == False):
-#		#if(GPIO.input(21) == 1):
-#			notches == notches + 1
-#			print(notches)
-#		else:
-#			notches = notches
+
+# 
+# conversion = [notches]/360 #notches/degrees
 #
+# 
+#
+# def get_azimuth(indigo_data) #converts indigo data to a notch number 
+#	azimuth = indigo_data*conversion
+#	return azimuth
+#
+#def go_clockwise() #sets relays in state B
+# 	GPIO.input(12, GPIO.HIGH)
+# 	GPIO.input(18, GPIO.HIGH)
+# 	GPIO.input(8, GPIO.LOW)
+# 	GPIO.input(10, GPIO.LOW)
+# 	GPIO.input(16, GPIO.LOW)
+#
+#
+# def go_counterwise() #sets relays in state A
+#	GPIO.input(8, GPIO.HIGH)
+# 	GPIO.input(10, GPIO.HIGH)
+# 	GPIO.input(16, GPIO.HIGH)
+# 	GPIO.input(12, GPIO.LOW)
+# 	GPIO.input(18, GPIO.LOW)
+#
+#def stop_motor() #sets all Relays to low
+#	GPIO.input(8, GPIO.LOW)
+# 	GPIO.input(10, GPIO.LOW)
+# 	GPIO.input(16, GPIO.LOW)
+# 	GPIO.input(12, GPIO.LOW)
+# 	GPIO.input(18, GPIO.LOW)
+#
+#
+#
+#
+#
+# #other option function a la go motor 
+# def go_location(azimuth)	
+#
+# 	go_clockwise() #goes clockwise until notches = azimuth notch data 
+#	notches = 0 
+#	while notches < azimuth 
+#		if(GPIO.input(21) == 0):
+#			notches == notches +1 
+#			print(notches)
+#		else: 
+#			notches = notches 
+# 	stop_motor()
+#	return notches
+#
+# def go_new_location(azimuth, notches)
+#	if(notches<azimuth): 
+#		go_clockwise() #goes clockwise until notches = azimuth notch data
+#		while notches < azimuth 
+#			if(GPIO.input(21) == 0):
+#				notches == notches +1 
+#				print(notches)
+#			else: 
+#				notches = notches 
+# 		stop_motor()
+#	if(notches>azimuth): 
+#		go_counterwise() #goes counterwise until notches = azimuth notch data (backwards) 
+#		while notches > azimuth 
+#			if(GPIO.input(21) == 0):
+#				notches == notches -1 
+#				print(notches)
+#			else: 
+#				notches = notches 
+# 		stop_motor()
+#
+#
+#
+#
+
 #except KeyboardInterrupt:
 #	GPIO.cleanup()
 
@@ -206,7 +269,7 @@ GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #initial_positon = [0]
 #final_position = [359]
 #try:
-#	if(initial_position != 0):
+#	if(initial_position != 1):
 #		print("Not in home position. Going to home position")
 #	else:
 #		print("In home position")
