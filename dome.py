@@ -188,23 +188,17 @@ GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 			print("solid #2")
 
 #NOT TESTED
-
-# 
 # conversion = [notches]/360 #notches/degrees
-#
-# 
-#
 # def get_azimuth(indigo_data) #converts indigo data to a notch number 
 #	azimuth = indigo_data*conversion
 #	return azimuth
-#
+
 #def go_clockwise() #sets relays in state B
 # 	GPIO.input(12, GPIO.HIGH)
 # 	GPIO.input(18, GPIO.HIGH)
 # 	GPIO.input(8, GPIO.LOW)
 # 	GPIO.input(10, GPIO.LOW)
 # 	GPIO.input(16, GPIO.LOW)
-#
 #
 # def go_counterwise() #sets relays in state A
 #	GPIO.input(8, GPIO.HIGH)
@@ -220,13 +214,8 @@ GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 # 	GPIO.input(12, GPIO.LOW)
 # 	GPIO.input(18, GPIO.LOW)
 #
-#
-#
-#
-#
 # #other option function a la go motor 
 # def go_location(azimuth)	
-#
 # 	go_clockwise() #goes clockwise until notches = azimuth notch data 
 #	notches = 0 
 #	while notches < azimuth 
@@ -257,10 +246,6 @@ GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #			else: 
 #				notches = notches 
 # 		stop_motor()
-#
-#
-#
-#
 
 #except KeyboardInterrupt:
 #	GPIO.cleanup()
