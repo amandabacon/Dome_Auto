@@ -42,7 +42,7 @@ try:
 	time.sleep(1)
 	GPIO.output(16, GPIO.LOW)
 	time.sleep(1)
-	GPIO.output(18, GPIO.LOW) #hardware safety relay--should be same GPIO pin
+	GPIO.output(18, GPIO.LOW)
 	time.sleep(1)
 	GPIO.output(22, GPIO.LOW) #hardware safety relay--should be same GPIO pin
 	time.sleep(1)
@@ -55,14 +55,14 @@ while True:
 	GPIO.output(13, GPIO.HIGH)
 	GPIO.output(15, GPIO.HIGH)
 	GPIO.output(16, GPIO.HIGH)
-	GPIO.output(18, GPIO.HIGH) #hardware safety relay--should be same pin (A split)
+	GPIO.output(18, GPIO.HIGH)
 	GPIO.output(22, GPIO.HIGH) #hardware safety relay--should be same pin (A split)
 	sleep(2) 
 	# Turn all relays OFF
 	GPIO.output(13, GPIO.LOW)
 	GPIO.output(15, GPIO.LOW)
 	GPIO.output(16, GPIO.LOW)
-	GPIO.output(18, GPIO.LOW) #hardware safety relay--should be same pin (A split)
+	GPIO.output(18, GPIO.LOW)
 	GPIO.output(22, GPIO.LOW) #hardware safety relay--should be same pin (A split)
 	sleep(2)
 
@@ -183,6 +183,7 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 		if(GPIO.input(37) == 1):
 			print("solid #2")
 
+notches = ??
 #NOT TESTED
 # conversion = [notches]/360 #notches/degrees
 # def get_azimuth(indigo_data) #converts indigo data to a notch number 
@@ -190,25 +191,25 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #	return azimuth
 
 #def go_clockwise() #sets relays in state B
-# 	GPIO.input(12, GPIO.HIGH)
-# 	GPIO.input(18, GPIO.HIGH)
-# 	GPIO.input(8, GPIO.LOW)
-# 	GPIO.input(10, GPIO.LOW)
-# 	GPIO.input(16, GPIO.LOW)
+# 	GPIO.input(15, GPIO.HIGH) #was 12
+# 	GPIO.input(18, GPIO.HIGH) #was 18
+# 	GPIO.input(22, GPIO.LOW) #was 8
+# 	GPIO.input(13, GPIO.LOW) #was 10
+# 	GPIO.input(16, GPIO.LOW) #was 16
 #
 # def go_counterwise() #sets relays in state A
-#	GPIO.input(8, GPIO.HIGH)
-# 	GPIO.input(10, GPIO.HIGH)
-# 	GPIO.input(16, GPIO.HIGH)
-# 	GPIO.input(12, GPIO.LOW)
-# 	GPIO.input(18, GPIO.LOW)
+#	GPIO.input(22, GPIO.HIGH) #was 8
+# 	GPIO.input(13, GPIO.HIGH) #was 10
+# 	GPIO.input(16, GPIO.HIGH) #was 16
+# 	GPIO.input(15, GPIO.LOW) #was 12
+# 	GPIO.input(18, GPIO.LOW) #was 18
 #
 #def stop_motor() #sets all Relays to low
-#	GPIO.input(8, GPIO.LOW)
-# 	GPIO.input(10, GPIO.LOW)
-# 	GPIO.input(16, GPIO.LOW)
-# 	GPIO.input(12, GPIO.LOW)
-# 	GPIO.input(18, GPIO.LOW)
+#	GPIO.input(22, GPIO.LOW) #was 8
+# 	GPIO.input(13, GPIO.LOW) #was 10
+# 	GPIO.input(16, GPIO.LOW) #was 16
+# 	GPIO.input(15, GPIO.LOW) #was 12
+# 	GPIO.input(18, GPIO.LOW) #was 18
 #
 # #other option function a la go motor 
 # def go_location(azimuth)	
@@ -246,6 +247,7 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #except KeyboardInterrupt:
 #	GPIO.cleanup()
 
+#WHAT IS THIS?
 #logic for IR beam break--home
 #initial_positon = [0]
 #final_position = [359]
