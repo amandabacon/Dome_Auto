@@ -7,14 +7,14 @@
 
 #Relays (6 total) Require GND,VCC,CNTRL
 #Two for hardware safety--one GPIO pin together
-GPIO_pin_relays = [8,10,12,16,18,22]
+GPIO_pin_relays = [16,18,22]
 
 #LED buttons (4 total) Require GND,VCC (3.3 V)
 #Backward(cc)--13
 #Forward(c)--15
 #Home--11
-#E-Stop--19
-GPIO_pin_buttons = [11,13,15,19]
+#E-Stop--
+GPIO_pin_buttons = [11,13,15]
 
 #IR Beam Break Sensor (2 total) Require GND,VCC,GPIO (signal)
 #Object needs to block IR light (metal)
@@ -23,4 +23,4 @@ GPIO_pin_buttons = [11,13,15,19]
 #Need 10 K Ohm resistor (only if not using pull_up_down)
 #One for position location
 #One for home location
-GPIO_pin_IR = [7,21]
+GPIO_pin_IR = [36,37]
