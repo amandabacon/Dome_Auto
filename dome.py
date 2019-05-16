@@ -28,19 +28,19 @@ max_azimuth = 360
 
 #set relay pins (6 relays--each need VCC,GND,CNTRL)
 #2 safety relays connected to same GPIO pin via molex cable being twisted
-pin_list = [8,10,12,16,18,22] #extra pin here--only need 5
+pin_list = [16,18,22] #only need 5
 
 for i in pin_list:
-	GPIO.setup(i, GPIO.OUT) #should this be IN?
+	GPIO.setup(i, GPIO.OUT)
 	GPIO.output(i, GPIO.HIGH)
 time.sleep(1)
 
 try:
-	GPIO.output(8, GPIO.LOW)
+	GPIO.output(, GPIO.LOW)
 	time.sleep(1)
-	GPIO.output(10, GPIO.LOW)
+	GPIO.output(, GPIO.LOW)
 	time.sleep(1)
-	GPIO.output(12, GPIO.LOW)
+	GPIO.output(, GPIO.LOW)
 	time.sleep(1)
 	GPIO.output(16, GPIO.LOW)
 	time.sleep(1)
@@ -54,17 +54,17 @@ except KeyboardInterrupt:
 
 while True:
 	# Turn all relays ON
-	GPIO.output(8, GPIO.HIGH)
-	GPIO.output(10, GPIO.HIGH)
-	GPIO.output(12, GPIO.HIGH)
+	GPIO.output(, GPIO.HIGH)
+	GPIO.output(, GPIO.HIGH)
+	GPIO.output(, GPIO.HIGH)
 	GPIO.output(16, GPIO.HIGH)
 	GPIO.output(18, GPIO.HIGH) #hardware safety relay--should be same pin (A split)
 	GPIO.output(22, GPIO.HIGH) #hardware safety relay--should be same pin (A split)
 	sleep(2) 
 	# Turn all relays OFF
-	GPIO.output(8, GPIO.LOW)
-	GPIO.output(10, GPIO.LOW)
-	GPIO.output(12, GPIO.LOW)
+	GPIO.output(, GPIO.LOW)
+	GPIO.output(, GPIO.LOW)
+	GPIO.output(, GPIO.LOW)
 	GPIO.output(16, GPIO.LOW)
 	GPIO.output(18, GPIO.LOW) #hardware safety relay--should be same pin (A split)
 	GPIO.output(22, GPIO.LOW) #hardware safety relay--should be same pin (A split)
@@ -88,7 +88,7 @@ GPIO.cleanup()
 #	time.sleep(1)
 #END OF NOT TESTED
 
-#Need four of these: backward,forward,STOP,home: 11,13,15,19
+#Need four of these: backward,forward,STOP,home: 11,13,15
 #HOME button
 #LED buttons--tested and work--need GND and 3.3 V
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
@@ -137,7 +137,7 @@ except:
 #STOP button
 #LED buttons--tested and work--need GND and 3.3 V
 #GND is bottom horizontal pin, 3.3 V is horizontal pin above and off to side of it.
-GPIO.setup(19, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+GPIO.setup(, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
 		button_status_STOP = GPIO.input(19)
@@ -153,7 +153,7 @@ except:
 
 #STOP logic #2
 try:
-	GPIO.wait_for_edge(19, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
+	GPIO.wait_for_edge(, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
 except KeyboardInterrupt:
 	GPIO.cleanup()
 	
@@ -172,19 +172,19 @@ except:
 
 #IR beam break--object needs to block IR light--receiver with 3 wires,
 #transmitter two wires--need 10K Ohm resistor (if not using pull_up_down),GND,VCC
-GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 	while True:
-		if(GPIO.input(7) == 0):
+		if(GPIO.input(36) == 0):
 			print("Beam inteference")
-		if(GPIO.input(7) == 1):
+		if(GPIO.input(36) == 1):
 			print("solid")
 
 #IR beam break number 2
-GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 	while True:
-		if(GPIO.input(21) == 0):
+		if(GPIO.input(37) == 0):
 			print("Beam interference #2")
-		if(GPIO.input(21) == 1):
+		if(GPIO.input(37) == 1):
 			print("solid #2")
 
 #NOT TESTED
@@ -219,7 +219,7 @@ GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 # 	go_clockwise() #goes clockwise until notches = azimuth notch data 
 #	notches = 0 
 #	while notches < azimuth 
-#		if(GPIO.input(21) == 0):
+#		if(GPIO.input(37) == 0):
 #			notches == notches +1 
 #			print(notches)
 #		else: 
@@ -231,7 +231,7 @@ GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #	if(notches<azimuth): 
 #		go_clockwise() #goes clockwise until notches = azimuth notch data
 #		while notches < azimuth 
-#			if(GPIO.input(21) == 0):
+#			if(GPIO.input(37) == 0):
 #				notches == notches +1 
 #				print(notches)
 #			else: 
@@ -240,7 +240,7 @@ GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #	if(notches>azimuth): 
 #		go_counterwise() #goes counterwise until notches = azimuth notch data (backwards) 
 #		while notches > azimuth 
-#			if(GPIO.input(21) == 0):
+#			if(GPIO.input(37) == 0):
 #				notches == notches -1 
 #				print(notches)
 #			else: 
