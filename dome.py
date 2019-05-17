@@ -109,6 +109,12 @@ try:
 		if button_status_cc == False:
 			print("Pressed")
 			time.sleep(0.2)
+#			GPIO.input(11, GPIO.HIGH) #was 8 R0,R00
+# 			GPIO.input(13, GPIO.HIGH) #was 10 R1
+# 			GPIO.input(16, GPIO.HIGH) #was 16 R3
+# 			GPIO.input(15, GPIO.LOW) #was 12 R2
+# 			GPIO.input(18, GPIO.LOW) #was 18 R4
+
 		else:
 			print("Not pressed")
 
@@ -124,6 +130,11 @@ try:
 		if button_status_c == False:
 			print("Pressed")
 			time.sleep(0.2)
+#			GPIO.input(15, GPIO.HIGH) #was 12 R2
+# 			GPIO.input(18, GPIO.HIGH) #was 18 R4
+# 			GPIO.input(11, GPIO.LOW) #was 8 R0,R00
+# 			GPIO.input(13, GPIO.LOW) #was 10 R1
+# 			GPIO.input(16, GPIO.LOW) #was 16 R3
 		else:
 			print("Not pressed")
 
