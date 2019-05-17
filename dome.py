@@ -28,7 +28,7 @@ max_azimuth = 360
 
 #set relay pins (6 relays--each need VCC,GND,CNTRL)
 #2 safety relays connected to same GPIO pin via molex cable being twisted
-pin_list = [13,15,16,18,22] #only need 5--all GPIO only pins
+pin_list = [11,13,15,16,18] #only need 5--all GPIO only pins
 
 for i in pin_list:
 	GPIO.setup(i, GPIO.OUT)
@@ -87,10 +87,10 @@ GPIO.cleanup()
 #Need four of these: backward,forward,STOP,home: 11,7,8,10 (7,8,10 not solely GPIO)
 #HOME button
 #LED buttons--tested and work--need GND and 3.3 V
-GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+GPIO.setup(10, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
-		button_status = GPIO.input(7)
+		button_status = GPIO.input(10)
 		if button_status == False:
 			print("Pressed")
 			time.sleep(0.2)
@@ -117,10 +117,10 @@ except:
 
 #Clockwise button
 #LED buttons--tested and work--need GND and 3.3 V
-GPIO.setup(10, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
-		button_status_c = GPIO.input(10)
+		button_status_c = GPIO.input(7)
 		if button_status_c == False:
 			print("Pressed")
 			time.sleep(0.2)
@@ -133,10 +133,10 @@ except:
 #STOP button
 #LED buttons--tested and work--need GND and 3.3 V
 #GND is bottom horizontal pin, 3.3 V is horizontal pin above and off to side of it.
-GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
-		button_status_STOP = GPIO.input(11)
+		button_status_STOP = GPIO.input(22)
 		if button_status_STOP == True:
 			print("Not Pressed")
 			time.sleep(0.2)
@@ -149,15 +149,15 @@ except:
 
 #STOP logic #2
 try:
-	GPIO.wait_for_edge(11, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
+	GPIO.wait_for_edge(22, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
 except KeyboardInterrupt:
 	GPIO.cleanup()
 	
 #LED buttons other option--tested and work--need GND and 3.3 V
-GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try:
 	while True:
-		button_status = GPIO.input(11)
+		button_status = GPIO.input(22)
 		if button_status == GPIO.HIGH:
 			print("Not pressed")
 		else:
@@ -183,7 +183,6 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 		if(GPIO.input(37) == 1):
 			print("solid #2")
 
-notches = ??
 #NOT TESTED
 # conversion = [notches]/360 #notches/degrees
 # def get_azimuth(indigo_data) #converts indigo data to a notch number 
@@ -191,25 +190,25 @@ notches = ??
 #	return azimuth
 
 #def go_clockwise() #sets relays in state B
-# 	GPIO.input(15, GPIO.HIGH) #was 12
-# 	GPIO.input(18, GPIO.HIGH) #was 18
-# 	GPIO.input(22, GPIO.LOW) #was 8
-# 	GPIO.input(13, GPIO.LOW) #was 10
-# 	GPIO.input(16, GPIO.LOW) #was 16
+# 	GPIO.input(15, GPIO.HIGH) #was 12 R2
+# 	GPIO.input(18, GPIO.HIGH) #was 18 R4
+# 	GPIO.input(11, GPIO.LOW) #was 8 R0,R00
+# 	GPIO.input(13, GPIO.LOW) #was 10 R1
+# 	GPIO.input(16, GPIO.LOW) #was 16 R3
 #
 # def go_counterwise() #sets relays in state A
-#	GPIO.input(22, GPIO.HIGH) #was 8
-# 	GPIO.input(13, GPIO.HIGH) #was 10
-# 	GPIO.input(16, GPIO.HIGH) #was 16
-# 	GPIO.input(15, GPIO.LOW) #was 12
-# 	GPIO.input(18, GPIO.LOW) #was 18
+#	GPIO.input(11, GPIO.HIGH) #was 8 R0,R00
+# 	GPIO.input(13, GPIO.HIGH) #was 10 R1
+# 	GPIO.input(16, GPIO.HIGH) #was 16 R3
+# 	GPIO.input(15, GPIO.LOW) #was 12 R2
+# 	GPIO.input(18, GPIO.LOW) #was 18 R4
 #
 #def stop_motor() #sets all Relays to low
-#	GPIO.input(22, GPIO.LOW) #was 8
-# 	GPIO.input(13, GPIO.LOW) #was 10
-# 	GPIO.input(16, GPIO.LOW) #was 16
-# 	GPIO.input(15, GPIO.LOW) #was 12
-# 	GPIO.input(18, GPIO.LOW) #was 18
+#	GPIO.input(11, GPIO.LOW) #was 8 R0,R00
+# 	GPIO.input(13, GPIO.LOW) #was 10 R1
+# 	GPIO.input(16, GPIO.LOW) #was 16 R3
+# 	GPIO.input(15, GPIO.LOW) #was 12 R2
+# 	GPIO.input(18, GPIO.LOW) #was 18 R4
 #
 # #other option function a la go motor 
 # def go_location(azimuth)	
