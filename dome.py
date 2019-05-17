@@ -24,7 +24,7 @@ dome_radius = 1.6002 #meters, or 63"
 
 #limit angles: 0 (north), 90 (east), 180 (south), 270 (west), 360 (north)
 min_azimuth = 0
-max_azimuth = 360
+max_azimuth = 494
 
 #set relay pins (6 relays--each need VCC,GND,CNTRL)
 #2 safety relays connected to same GPIO pin via molex cable being twisted
@@ -32,68 +32,19 @@ pin_list = [11,13,15,16,18] #only need 5--all GPIO only pins
 
 for i in pin_list:
 	GPIO.setup(i, GPIO.OUT)
-	GPIO.output(i, GPIO.HIGH)
-time.sleep(1)
-
-try:
-	GPIO.output(13, GPIO.LOW)
-	time.sleep(1)
-	GPIO.output(15, GPIO.LOW)
-	time.sleep(1)
-	GPIO.output(16, GPIO.LOW)
-	time.sleep(1)
-	GPIO.output(18, GPIO.LOW)
-	time.sleep(1)
-	GPIO.output(22, GPIO.LOW) #hardware safety relay--should be same GPIO pin
-	time.sleep(1)
-except KeyboardInterrupt:
-	print('Quit')
-	GPIO.cleanup()
-
-while True:
-	# Turn all relays ON
-	GPIO.output(13, GPIO.HIGH)
-	GPIO.output(15, GPIO.HIGH)
-	GPIO.output(16, GPIO.HIGH)
-	GPIO.output(18, GPIO.HIGH)
-	GPIO.output(22, GPIO.HIGH) #hardware safety relay--should be same pin (A split)
-	sleep(2) 
-	# Turn all relays OFF
-	GPIO.output(13, GPIO.LOW)
-	GPIO.output(15, GPIO.LOW)
-	GPIO.output(16, GPIO.LOW)
-	GPIO.output(18, GPIO.LOW)
-	GPIO.output(22, GPIO.LOW) #hardware safety relay--should be same pin (A split)
-	sleep(2)
 
 #reset GPIO settings
-GPIO.cleanup()
+#GPIO.cleanup()
 
-#NOT TESTED
-#toggle switch for home position--deprecated
-#GPIO.setup(23, GPIO.IN)
-#GPIO.setup(24, GPIO.IN)
-
-#while True:
-#	if GPIO.input(23) == 1:
-#		print("Switch on the left")
-#	if GPIO.input(24) == 1:
-#		print("Switch on the right")
-#	else:
-#		print("Switch in center")
-#	time.sleep(1)
-#END OF NOT TESTED
-
-#Need four of these: backward,forward,STOP,home: 11,7,8,10 (7,8,10 not solely GPIO)
+#Need four of these: counter clockwise,clockwise,STOP,home: 11,7,8,10 (7,8,10 not solely GPIO)
 #HOME button
 #LED buttons--tested and work--need GND and 3.3 V
 GPIO.setup(10, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
-		button_status = GPIO.input(10)
-		if button_status == False:
+		button_status_home = GPIO.input(10)
+		if button_status_home == False:
 			print("Pressed")
-			time.sleep(0.2)
 		else:
 			print("Not pressed")
 
@@ -108,12 +59,11 @@ try:
 		button_status_cc = GPIO.input(8)
 		if button_status_cc == False:
 			print("Pressed")
-			time.sleep(0.2)
-#			GPIO.input(11, GPIO.HIGH) #was 8 R0,R00
-# 			GPIO.input(13, GPIO.HIGH) #was 10 R1
-# 			GPIO.input(16, GPIO.HIGH) #was 16 R3
-# 			GPIO.input(15, GPIO.LOW) #was 12 R2
-# 			GPIO.input(18, GPIO.LOW) #was 18 R4
+#			GPIO.input(11, GPIO.HIGH) #R0,R00
+# 			GPIO.input(13, GPIO.HIGH) #R1
+# 			GPIO.input(16, GPIO.HIGH) #R3
+# 			GPIO.input(15, GPIO.LOW) #R2
+# 			GPIO.input(18, GPIO.LOW) #R4
 
 		else:
 			print("Not pressed")
@@ -129,53 +79,51 @@ try:
 		button_status_c = GPIO.input(7)
 		if button_status_c == False:
 			print("Pressed")
-			time.sleep(0.2)
-#			GPIO.input(15, GPIO.HIGH) #was 12 R2
-# 			GPIO.input(18, GPIO.HIGH) #was 18 R4
-# 			GPIO.input(11, GPIO.LOW) #was 8 R0,R00
-# 			GPIO.input(13, GPIO.LOW) #was 10 R1
-# 			GPIO.input(16, GPIO.LOW) #was 16 R3
+#			GPIO.input(15, GPIO.HIGH) #R2
+# 			GPIO.input(18, GPIO.HIGH) #R4
+# 			GPIO.input(11, GPIO.LOW) #R0,R00
+# 			GPIO.input(13, GPIO.LOW) #R1
+# 			GPIO.input(16, GPIO.LOW) #R3
 		else:
 			print("Not pressed")
 
 except:
 	GPIO.cleanup()
 
-#STOP button
+#STOP button--Logic: exit program completely
 #LED buttons--tested and work--need GND and 3.3 V
 #GND is bottom horizontal pin, 3.3 V is horizontal pin above and off to side of it.
-GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
-try: 
-	while True:
-		button_status_STOP = GPIO.input(22)
-		if button_status_STOP == True:
-			print("Not Pressed")
-			time.sleep(0.2)
-		if button_status_STOP == False:
-			print("Emergency Stop!")
-			sys.exit()
+#GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+#try: 
+#	while True:
+#		button_status_STOP = GPIO.input(22)
+#		if button_status_STOP == True:
+#			print("Not Pressed")
+#		if button_status_STOP == False:
+#			print("Emergency Stop!")
+#			sys.exit()
 
-except:
-	GPIO.cleanup()	
+#except:
+#	GPIO.cleanup()	
 
-#STOP logic #2
-try:
-	GPIO.wait_for_edge(22, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
-except KeyboardInterrupt:
-	GPIO.cleanup()
+#STOP button--Logic #2: Edge case
+#try:
+#	GPIO.wait_for_edge(22, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
+#except KeyboardInterrupt:
+#	GPIO.cleanup()
 	
 #LED buttons other option--tested and work--need GND and 3.3 V
-GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
-try:
-	while True:
-		button_status = GPIO.input(22)
-		if button_status == GPIO.HIGH:
-			print("Not pressed")
-		else:
-			print("Pressed")
+#GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+#try:
+#	while True:
+#		button_status = GPIO.input(22)
+#		if button_status == GPIO.HIGH:
+#			print("Not pressed")
+#		else:
+#			print("Pressed")
 		
-except:
-	GPIO.cleanup()
+#except:
+#	GPIO.cleanup()
 
 #IR beam break--object needs to block IR light--receiver with 3 wires,
 #transmitter two wires--need 10K Ohm resistor (if not using pull_up_down),GND,VCC
@@ -186,7 +134,7 @@ GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 		if(GPIO.input(36) == 1):
 			print("solid")
 
-#IR beam break number 2
+#IR beam break for home test
 GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 	while True:
 		if(GPIO.input(37) == 0):
@@ -201,25 +149,25 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #	return azimuth
 
 #def go_clockwise() #sets relays in state B
-# 	GPIO.input(15, GPIO.HIGH) #was 12 R2
-# 	GPIO.input(18, GPIO.HIGH) #was 18 R4
-# 	GPIO.input(11, GPIO.LOW) #was 8 R0,R00
-# 	GPIO.input(13, GPIO.LOW) #was 10 R1
-# 	GPIO.input(16, GPIO.LOW) #was 16 R3
+# 	GPIO.input(15, GPIO.HIGH) #R2
+# 	GPIO.input(18, GPIO.HIGH) #R4
+# 	GPIO.input(11, GPIO.LOW) #R0,R00
+# 	GPIO.input(13, GPIO.LOW) #R1
+# 	GPIO.input(16, GPIO.LOW) #R3
 #
 # def go_counterwise() #sets relays in state A
-#	GPIO.input(11, GPIO.HIGH) #was 8 R0,R00
-# 	GPIO.input(13, GPIO.HIGH) #was 10 R1
-# 	GPIO.input(16, GPIO.HIGH) #was 16 R3
-# 	GPIO.input(15, GPIO.LOW) #was 12 R2
-# 	GPIO.input(18, GPIO.LOW) #was 18 R4
+#	GPIO.input(11, GPIO.HIGH) #R0,R00
+# 	GPIO.input(13, GPIO.HIGH) #R1
+# 	GPIO.input(16, GPIO.HIGH) #R3
+# 	GPIO.input(15, GPIO.LOW) #R2
+# 	GPIO.input(18, GPIO.LOW) #R4
 #
 #def stop_motor() #sets all Relays to low
-#	GPIO.input(11, GPIO.LOW) #was 8 R0,R00
-# 	GPIO.input(13, GPIO.LOW) #was 10 R1
-# 	GPIO.input(16, GPIO.LOW) #was 16 R3
-# 	GPIO.input(15, GPIO.LOW) #was 12 R2
-# 	GPIO.input(18, GPIO.LOW) #was 18 R4
+#	GPIO.input(11, GPIO.LOW) #R0,R00
+# 	GPIO.input(13, GPIO.LOW) #R1
+# 	GPIO.input(16, GPIO.LOW) #R3
+# 	GPIO.input(15, GPIO.LOW) #R2
+# 	GPIO.input(18, GPIO.LOW) #R4
 #
 # #other option function a la go motor 
 # def go_location(azimuth)	
@@ -257,12 +205,11 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #except KeyboardInterrupt:
 #	GPIO.cleanup()
 
-#WHAT IS THIS?
-#logic for IR beam break--home
+#logic for IR beam break home position
 #initial_positon = [0]
-#final_position = [359]
+#final_position = [494]
 #try:
-#	if(initial_position != 1):
+#	if(initial_position != 494):
 #		print("Not in home position. Going to home position")
 #	else:
 #		print("In home position")
@@ -270,20 +217,11 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #except:
 #END OF NOT TESTED
 
-#pseudo-code of dome operation
-
-Mode = enum("Stand","Track")
-
 #Raised exception when trying to slew to an invalid azimuth angle
 class InvalidPositionException():
 	#takes this from telescope keypad
 	#string? int? Telescope pad: “Outside Safe Zone, Slewing canceled...”
 	print("Error: invalid azimuth angle.")
-
-class InvalidHorizonException():
-	#takes from telescope
-	#“Object Below Horizon Limit. Altitude:[Value]”.
-	print("Object Below Horizon Limit. Altitude: ", value)
 
 #Initial start-up position of dome
 class Dome():
@@ -299,27 +237,8 @@ class Dome():
 	def currentPosition(self, position):
 		#return coordinates in degrees, lon/lat
 
-#synchronization with the 16" telescope
-class DomeTelescope(Dome):
-	#sync dome with telescope
-	def beginSync(self):
-
-	#dome-telescope synchronization complete		
-	def completeSync(self):
-	
-	#synchronized tracking with telescope	
-	def track(self):
-	
-	#check dome is tracking
-	def isTracking(self):
-		#returns True if dome is tracking, False otherwise
-		#above is a boolean
-
 	#dome only move when asked
 	def stall(self):
-	
-	#If dome is tracking with telescope, sync dome position with scope position
-	def TelescopePos(self):
 	
 	#get status of dome
 	def domeStatus(self):
