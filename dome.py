@@ -146,46 +146,40 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #Not Tested 
 # option 1
 # def my_callback(channel):
-#	if GPIO.input(36) ==0):
+#	if GPIO.input(37) == 0):
 #		print("Falling edge")
 #		
-#	if GPIO.input(36) !=0):
+#	if GPIO.input(37) != 0):
 #		print("Rising edge")
-#	notch_ir = GPIO.input(36)
+#	notch_ir = GPIO.input(37)
 #	return notch_ir
 # then in clockwise and counterwise we have if notch_ir = 1 notches == notches + 1 
 # but I dont see how this is different from what we have now? this just seems the same? 
 # 
-# GPIO.add_event_detect(36, GPIO.BOTH, callback=(my_callback))
+# GPIO.add_event_detect(37, GPIO.BOTH, callback=(my_callback))
 
-
-#option 2
+# option 2
 # def my_callback(channel):
-#	if GPIO.input(36) ==0):
+#	if GPIO.input(37) == 0):
 #		print("Falling edge")
 #		notch_ir = 0
 #		return notch_ir
 #		
-#	if GPIO.input(36) !=0):
+#	if GPIO.input(37) != 0):
 #		print("Rising edge")
 #		notch_ir = 1
 #		return notch_ir
 #
-# 
-#
-# GPIO.add_event_detect(36, GPIO.BOTH, callback=(my_callback))
+# GPIO.add_event_detect(37, GPIO.BOTH, callback=(my_callback))
 
-# Option 3 
-#
-# GPIO.wait_for_edge(36, GPIO.Rising)
+# option 3 
+# GPIO.wait_for_edge(37, GPIO.RISING)
 # notches == notches + 1
 # in a loop? i dont know what the loop would be 
 #
-# Option 4
+# option 4
 # comparison between notch_ir and notch_ir from timestep before
-#
-#
-#
+
 #NOT TESTED
 # conversion = max_azimuth/360 #notches/degrees
 # def get_azimuth(indigo_data) #converts indigo data to a notch number 
