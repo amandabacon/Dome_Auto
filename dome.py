@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-#------------------------------------
-#Author(s): Amanda Bacon	    -
-#Automation of Stickney Observatory -
-#------------------------------------
+#------------------------------------------------------------------------
+#Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell	-
+#Automation of Stickney Observatory					-
+#------------------------------------------------------------------------
 
 #import modules below
 import time
@@ -24,12 +24,14 @@ dome_radius = 1.6002 #meters, or 63"
 
 #limit angles: 0 (north), 90 (east), 180 (south), 270 (west), 360 (north)
 min_azimuth = 0
-max_azimuth = 494
+max_azimuth = 494 #notches where the motor gear teeth insert
 
 #set relay pins (6 relays--each need VCC,GND,CNTRL)
 #2 safety relays connected to same GPIO pin via molex cable being twisted
+#2 safety relays on GPIO pin 11
 pin_list = [11,13,15,16,18] #only need 5--all GPIO only pins
 
+#set up GPIO pin list
 for i in pin_list:
 	GPIO.setup(i, GPIO.OUT)
 
