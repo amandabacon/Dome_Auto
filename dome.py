@@ -143,9 +143,48 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 			print("Beam interference #2")
 		if(GPIO.input(37) == 1):
 			print("solid #2")
+			
+#this is an attempt at introducing an event to indicate rising/falling transition
+#Tested--only acknowledges when there is interference (rise). Seems to count once per interference, which is good.
+# option 1
+# ir_count = GPIO.input(36)
+# def my_callback(ir_count):
+#	if ir_count == 0:
+#		print("Falling edge")
+#	if ir_count != 0:
+#		print("Rising edge")
+#	notch_ir = ir_count
+#	return notch_ir
+# then in clockwise and counterwise we have if notch_ir = 1 notches == notches + 1 
+# but I dont see how this is different from what we have now? this just seems the same? 
+# GPIO.add_event_detect(36, GPIO.BOTH, callback = my_callback)
+
+#Tested--does the same as the above code. Does not acknowledge solid at all.
+# option 2
+# ir_count_2 = GPIO.input(36)
+# def my_callback(ir_count_2):
+#	if ir_count_2 == 0:
+#		print("Falling edge")
+#		notch_ir = 0
+#		return notch_ir
+#	if ir_count_2 != 0:
+#		print("Rising edge")
+#		notch_ir = 1
+#		return notch_ir
+# GPIO.add_event_detect(36, GPIO.BOTH, callback = my_callback)
+
+#Not tested
+# option 3 
+# GPIO.wait_for_edge(36, GPIO.RISING)
+# notches == notches + 1
+# in a loop? i dont know what the loop would be 
+
+#Not tested
+# option 4
+# comparison between notch_ir and notch_ir from timestep before
 
 #NOT TESTED
-# conversion = [notches]/360 #notches/degrees
+# conversion = max_azimuth/360 #notches/degrees
 # def get_azimuth(indigo_data) #converts indigo data to a notch number 
 #	azimuth = indigo_data*conversion
 #	return azimuth
