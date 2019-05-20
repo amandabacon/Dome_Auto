@@ -145,33 +145,35 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #this is an attempt at introducing an event to indicate rising/falling transition
 #Tested--only acknowledges when there is interference (rise). Seems to count once per interference, which is good.
 # option 1
-# def my_callback(channel):
-#	if GPIO.input(37) == 0:
+# ir_count = GPIO.input(36)
+# def my_callback(ir_count):
+#	if ir_count == 0:
 #		print("Falling edge")
-#	if GPIO.input(37) != 0:
+#	if ir_count != 0:
 #		print("Rising edge")
-#	notch_ir = GPIO.input(37)
+#	notch_ir = ir_count
 #	return notch_ir
 # then in clockwise and counterwise we have if notch_ir = 1 notches == notches + 1 
 # but I dont see how this is different from what we have now? this just seems the same? 
-# GPIO.add_event_detect(37, GPIO.BOTH, callback = my_callback)
+# GPIO.add_event_detect(36, GPIO.BOTH, callback = my_callback)
 
 #Tested--does the same as the above code. Does not acknowledge solid at all.
 # option 2
-# def my_callback(channel):
-#	if GPIO.input(37) == 0:
+# ir_count_2 = GPIO.input(36)
+# def my_callback(ir_count_2):
+#	if ir_count_2 == 0:
 #		print("Falling edge")
 #		notch_ir = 0
 #		return notch_ir
-#	if GPIO.input(37) != 0:
+#	if ir_count_2 != 0:
 #		print("Rising edge")
 #		notch_ir = 1
 #		return notch_ir
-# GPIO.add_event_detect(37, GPIO.BOTH, callback = my_callback)
+# GPIO.add_event_detect(36, GPIO.BOTH, callback = my_callback)
 
 #Not tested
 # option 3 
-# GPIO.wait_for_edge(37, GPIO.RISING)
+# GPIO.wait_for_edge(36, GPIO.RISING)
 # notches == notches + 1
 # in a loop? i dont know what the loop would be 
 
