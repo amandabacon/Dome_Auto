@@ -143,12 +143,27 @@ except:
 #        GPIO.add_event_detect(22, GPIO.FALLING, callback = e_stop)
 #e_stop(button_status_STOP)
 
-#STOP button--Logic #6: turn relay to low when e_stop pressed
+#STOP button--Logic #6: WORKS, BUT IN A LOOP
+#try:
+#    while True:
+#        button_status_STOP = GPIO.input(22)
+#        if button_status_STOP == True:
+#            print("Not pressed")
+#            GPIO.output(r#, GPIO.HIGH)
+#            print("high")
+#        if button_status_STOP == False:
+#            print("Pressed")
+#            GPIO.output(r#, GPIO.LOW)
+#            print("low")
+#except KeyboardInterrupt:
+#            GPIO.cleanup()
+
+#STOP button--Logic #7: turn relay to low when e_stop pressed
 #GOOOOOODDDDDDD
 #button_status_STOP = GPIO.input(22)
 #def loop(button_status_STOP):
 #    try:
-#        button_status_STOP = GPIO.input(2)
+#        button_status_STOP = GPIO.input(22)
 #        if button_status_STOP == 1:
 #            GPIO.output(r#, GPIO.HIGH)
 #        if button_status_STOP == 0:
@@ -191,7 +206,28 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 			print("Beam interference #2")
 		if(GPIO.input(37) == 1):
 			print("solid #2")
-			
+
+#IR Beam Break Sensor Notch Logic--adaption of option 2 below
+GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+test = GPIO.input(36)
+def my_callback(test):
+    try:
+        test = GPIO.input(36)
+        if test == 0:
+            print("interfere")
+##            notch_ir = test
+##            return notch_ir
+        if test != 0:
+            print("solid")
+##            notch_ir = test
+##            return notch_ir
+        GPIO.add_event_detect(36, GPIO.BOTH, callback = my_callback)
+        while True:
+            pass
+    except KeyboardInterrupt:
+        GPIO.cleanup()
+my_callback(test)
+	
 #this is an attempt at introducing an event to indicate rising/falling transition
 #Tested--only acknowledges when there is interference (rise). Seems to count once per interference, which is good.
 # option 1
