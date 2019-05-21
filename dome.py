@@ -24,7 +24,7 @@ dome_radius = 1.6002 #meters, or 63"
 
 #limit angles: 0 (north), 90 (east), 180 (south), 270 (west), 360 (north)
 min_azimuth = 0
-max_azimuth = 494 #notches where the motor gear teeth insert
+max_azimuth = 494 #notches for the motor gear teeth
 
 #set relay pins (6 relays--each need VCC,GND,CNTRL)
 #2 safety relays connected to same GPIO pin via molex cable being twisted
@@ -34,9 +34,6 @@ pin_list = [11,13,15,16,18] #only need 5--all GPIO only pins
 #set up GPIO pin list
 for i in pin_list:
 	GPIO.setup(i, GPIO.OUT)
-
-#reset GPIO settings
-#GPIO.cleanup()
 
 #Need four of these: counter clockwise,clockwise,STOP,home: 11,7,8,10 (7,8,10 not solely GPIO)
 #HOME button
@@ -92,6 +89,7 @@ try:
 except:
 	GPIO.cleanup()
 
+#ESTOP TO RELAYS LOW, SAFETY FEATURES IF SOMEONE PRESSES TWO BUTTONS
 #STOP button--Logic: exit program completely
 #LED buttons--tested and work--need GND and 3.3 V
 #GND is bottom horizontal pin, 3.3 V is horizontal pin above and off to side of it.
@@ -216,7 +214,7 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #	notches = 0 
 #	while notches < azimuth 
 #		if(GPIO.input(37) == 0):
-#			notches == notches +1 
+#			notches == notches + 1 
 #			print(notches)
 #		else: 
 #			notches = notches 
@@ -224,20 +222,20 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 #	return notches
 #
 # def go_new_location(azimuth, notches)
-#	if(notches<azimuth): 
+#	if(notches < azimuth): 
 #		go_clockwise() #goes clockwise until notches = azimuth notch data
 #		while notches < azimuth 
 #			if(GPIO.input(37) == 0):
-#				notches == notches +1 
+#				notches == notches + 1 
 #				print(notches)
 #			else: 
 #				notches = notches 
 # 		stop_motor()
-#	if(notches>azimuth): 
+#	if(notches > azimuth): 
 #		go_counterwise() #goes counterwise until notches = azimuth notch data (backwards) 
 #		while notches > azimuth 
 #			if(GPIO.input(37) == 0):
-#				notches == notches -1 
+#				notches == notches - 1 
 #				print(notches)
 #			else: 
 #				notches = notches 
@@ -288,6 +286,9 @@ class Dome():
 	#get azimuth (Az)
 	def getAz(self):
 		#return dome's current azimuth in decimal degrees
+
+#reset GPIO settings
+GPIO.cleanup()
 
 #==========================================================================
 #For book keeping purposes
