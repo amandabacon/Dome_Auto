@@ -11,6 +11,7 @@ from datetime import datetime
 import RPi.GPIO as GPIO
 import smbus
 import sys
+import os
 
 #set up mode for GPIO
 GPIO.setmode(GPIO.BOARD)
@@ -89,7 +90,8 @@ try:
 except:
 	GPIO.cleanup()
 
-#ESTOP TO RELAYS LOW, SAFETY FEATURES IF SOMEONE PRESSES TWO BUTTONS
+#ESTOP SETS RELAYS LOW (except safety relays r0 and r00), SAFETY FEATURES IF SOMEONE PRESSES TWO BUTTONS
+
 #STOP button--Logic: exit program completely
 #LED buttons--tested and work--need GND and 3.3 V
 #GND is bottom horizontal pin, 3.3 V is horizontal pin above and off to side of it.
@@ -106,12 +108,60 @@ except:
 #except:
 #	GPIO.cleanup()	
 
-#STOP button--Logic #2: Edge case
+#STOP button--Logic #2: Edge case--waits for button to be pressed then ends program
 #try:
 #	GPIO.wait_for_edge(22, GPIO.FALLING) #signal starts to fall towards 0. Counters initial high state.
 #except KeyboardInterrupt:
 #	GPIO.cleanup()
-	
+
+#STOP button--Logic #3: without loop and exit program
+#try:
+#    button_status = GPIO.input(22)
+#    GPIO.wait_for_edge(22, GPIO.FALLING)
+#    sys.exit()
+#except:
+#    GPIO.cleanup()
+
+#STOP button--Logic #4: without loop and exit program
+#try:
+#    button_status = GPIO.input(22)
+#    GPIO.wait_for_edge(22, GPIO.FALLING)
+#    if button_status == True:
+#        print("ESTOP")
+#    if button_status == False:
+#        print("not pressed")
+#    sys.exit()
+#except:
+#    GPIO.cleanup()
+
+#STOP button--Logic #5: without loop. If not pressed, does everything else, if pressed, prints and continues program
+#GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+#button_status_STOP = GPIO.input(22)
+#def e_stop(button_status_STOP):
+#    if button_status_STOP == False:
+#        print("E STOP Pressed!")
+#        GPIO.add_event_detect(22, GPIO.FALLING, callback = e_stop)
+#e_stop(button_status_STOP)
+
+#STOP button--Logic #6: turn relay to low when e_stop pressed
+#GOOOOOODDDDDDD
+#button_status_STOP = GPIO.input(22)
+#def loop(button_status_STOP):
+#    try:
+#        button_status_STOP = GPIO.input(2)
+#        if button_status_STOP == 1:
+#            GPIO.output(r#, GPIO.HIGH)
+#        if button_status_STOP == 0:
+#            GPIO.output(r#, GPIO.LOW)
+#        GPIO.add_event_detect(22, GPIO.BOTH, callback = loop)
+#        while True:
+#                pass
+
+#    except KeyboardInterrupt:
+#        GPIO.cleanup()
+#loop(button_status_STOP)
+#GOOOOOODDDDDDD
+
 #LED buttons other option--tested and work--need GND and 3.3 V
 #GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 #try:
