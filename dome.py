@@ -27,67 +27,79 @@ dome_radius = 1.6002 #meters, or 63"
 min_azimuth = 0
 max_azimuth = 494 #notches for the motor gear teeth
 
-#set relay pins (6 relays--each need VCC,GND,CNTRL)
-#2 safety relays connected to same GPIO pin via molex cable being twisted
-#2 safety relays on GPIO pin 11
+#set relay pins (6 relays and each need VCC,GND,CNTRL (GPIO pin))
+#2 safety relays connected to same GPIO pin. They are located on pin 11
 pin_list = [11,13,15,16,18] #only need 5--all GPIO only pins
 
 #set up GPIO pin list
 for i in pin_list:
 	GPIO.setup(i, GPIO.OUT)
 
-#Need four of these: counter clockwise,clockwise,STOP,home: 11,7,8,10 (7,8,10 not solely GPIO)
+#Need four buttons: counter clockwise, clockwise, STOP, home. GPIO pins used: 7,8,10,22 (7,8,10 clk and UART)
+#HAS TO INCORPORATE RELAYS TO MOVE!!!!!!!!!!!!!!!!
 #HOME button
-#LED buttons--tested and work--need GND and 3.3 V
-GPIO.setup(10, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
-try: 
-	while True:
-		button_status_home = GPIO.input(10)
-		if button_status_home == False:
-			print("Pressed")
-		else:
-			print("Not pressed")
+#Button tested and works: need GND and 3.3 V (GPIO pin)
+#GPIO.setup(10, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
+#try: 
+#	while True:
+#		button_status_home = GPIO.input(10)
+#		if button_status_home == False:
+#			print("Pressed")
+#		else:
+#			print("Not pressed")
 
-except:
-	GPIO.cleanup()
+#except:
+#	GPIO.cleanup()
 
 #Counter clockwise button
-#LED buttons--tested and work--need GND and 3.3 V
+#Button tested and works: need GND and 3.3 V (GPIO pint)
+#CC button sets physical relay 0,00,1,3 high (works)
 GPIO.setup(8, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
 		button_status_cc = GPIO.input(8)
 		if button_status_cc == False:
 			print("Pressed")
-#			GPIO.output(11, GPIO.HIGH) #R0,R00
-# 			GPIO.output(13, GPIO.HIGH) #R1
-# 			GPIO.output(16, GPIO.HIGH) #R3
-# 			GPIO.output(15, GPIO.LOW) #R2
-# 			GPIO.output(18, GPIO.LOW) #R4
+			GPIO.output(11, GPIO.HIGH) #R0,R00 (safety relays)
+ 			GPIO.output(13, GPIO.HIGH) #R1
+ 			GPIO.output(16, GPIO.HIGH) #R3
+ 			GPIO.output(15, GPIO.LOW) #R2
+ 			GPIO.output(18, GPIO.LOW) #R4
 
 		else:
 			print("Not pressed")
 
-except:
+except KeyboardInterrupt:
+	GPIO.output(15, GPIO.LOW)
+	GPIO.output(18, GPIO.LOW)
+	GPIO.output(11, GPIO.LOW)
+	GPIO.output(13, GPIO.LOW)
+	GPIO.output(16, GPIO.LOW)
 	GPIO.cleanup()
 
 #Clockwise button
-#LED buttons--tested and work--need GND and 3.3 V
+#Button tested and works: need GND and 3.3 V (GPIO pin)
+#C button sets physical relay 2,4 high (works)
 GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
 try: 
 	while True:
 		button_status_c = GPIO.input(7)
 		if button_status_c == False:
 			print("Pressed")
-#			GPIO.output(15, GPIO.HIGH) #R2
-# 			GPIO.output(18, GPIO.HIGH) #R4
-# 			GPIO.output(11, GPIO.LOW) #R0,R00
-# 			GPIO.output(13, GPIO.LOW) #R1
-# 			GPIO.output(16, GPIO.LOW) #R3
+			GPIO.output(15, GPIO.HIGH) #R2
+ 			GPIO.output(18, GPIO.HIGH) #R4
+ 			GPIO.output(11, GPIO.LOW) #R0,R00
+ 			GPIO.output(13, GPIO.LOW) #R1
+ 			GPIO.output(16, GPIO.LOW) #R3
 		else:
 			print("Not pressed")
 
 except:
+	GPIO.output(15, GPIO.LOW)
+	GPIO.output(18, GPIO.LOW)
+	GPIO.output(11, GPIO.LOW)
+	GPIO.output(13, GPIO.LOW)
+	GPIO.output(16, GPIO.LOW)
 	GPIO.cleanup()
 
 #ESTOP SETS RELAYS LOW (except safety relays r0 and r00), SAFETY FEATURES IF SOMEONE PRESSES TWO BUTTONS
