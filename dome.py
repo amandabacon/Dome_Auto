@@ -189,21 +189,9 @@ except:
 #loop(button_status_STOP)
 #GOOOOOODDDDDDD
 
-#LED buttons other option--tested and work--need GND and 3.3 V
-#GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #initial high state
-#try:
-#	while True:
-#		button_status = GPIO.input(22)
-#		if button_status == GPIO.HIGH:
-#			print("Not pressed")
-#		else:
-#			print("Pressed")
-		
-#except:
-#	GPIO.cleanup()
-
-#IR beam break--object needs to block IR light--receiver with 3 wires,
-#transmitter two wires--need 10K Ohm resistor (if not using pull_up_down),GND,VCC
+#IR beam break sensor (GND,VCC,GPIO): object needs to block IR light
+#receiver has 3 wires, transmitter has two wires
+#need 10K Ohm resistor if not using pull_up_down
 GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 	while True:
 		if(GPIO.input(36) == 0):
@@ -211,15 +199,26 @@ GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 		if(GPIO.input(36) == 1):
 			print("solid")
 
-#IR beam break for home test
+#IR beam break home test
 GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 	while True:
 		if(GPIO.input(35) == 0):
 			print("Beam interference #2")
 		if(GPIO.input(35) == 1):
 			print("solid #2")
+			
+#IR beam break home position
+#initial_positon = [0]
+#final_position = [494]
+#try:
+#	if(initial_position != 494):
+#		print("Not in home position. Going to home position")
+#	else:
+#		print("In home position")
+#
+#except:
 
-#IR Beam Break Sensor Notch Logic--adaption of option 2 below
+#IR Beam Break Sensor notch logic: adaption of option 2 below
 GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 test = GPIO.input(36)
 def my_callback(test):
@@ -279,33 +278,33 @@ my_callback(test)
 # option 4
 # comparison between notch_ir and notch_ir from timestep before
 
-#NOT TESTED
+#NOT TESTED BELOW
 # conversion = max_azimuth/360 #notches/degrees
 # def get_azimuth(indigo_data) #converts indigo data to a notch number 
 #	azimuth = indigo_data*conversion
 #	return azimuth
 
-#def go_clockwise() #sets relays in state B
-# 	GPIO.output(15, GPIO.HIGH) #R2
-# 	GPIO.output(18, GPIO.HIGH) #R4
-# 	GPIO.output(11, GPIO.LOW) #R0,R00
-# 	GPIO.output(13, GPIO.LOW) #R1
-# 	GPIO.output(16, GPIO.LOW) #R3
-#
-# def go_counterwise() #sets relays in state A
-#	GPIO.output(11, GPIO.HIGH) #R0,R00
-# 	GPIO.output(13, GPIO.HIGH) #R1
-# 	GPIO.output(16, GPIO.HIGH) #R3
-# 	GPIO.output(15, GPIO.LOW) #R2
-# 	GPIO.output(18, GPIO.LOW) #R4
-#
-#def stop_motor() #sets all Relays to low
-#	GPIO.output(11, GPIO.LOW) #R0,R00
-# 	GPIO.output(13, GPIO.LOW) #R1
-# 	GPIO.output(16, GPIO.LOW) #R3
-# 	GPIO.output(15, GPIO.LOW) #R2
-# 	GPIO.output(18, GPIO.LOW) #R4
-#
+def go_clockwise() #sets relays in state B
+ 	GPIO.output(15, GPIO.HIGH) #R2
+ 	GPIO.output(18, GPIO.HIGH) #R4
+ 	GPIO.output(11, GPIO.LOW) #R0,R00
+ 	GPIO.output(13, GPIO.LOW) #R1
+ 	GPIO.output(16, GPIO.LOW) #R3
+
+def go_counterwise() #sets relays in state A
+	GPIO.output(11, GPIO.HIGH) #R0,R00
+ 	GPIO.output(13, GPIO.HIGH) #R1
+ 	GPIO.output(16, GPIO.HIGH) #R3
+ 	GPIO.output(15, GPIO.LOW) #R2
+ 	GPIO.output(18, GPIO.LOW) #R4
+
+def stop_motor() #sets all Relays to low
+	GPIO.output(11, GPIO.LOW) #R0,R00
+ 	GPIO.output(13, GPIO.LOW) #R1
+ 	GPIO.output(16, GPIO.LOW) #R3
+ 	GPIO.output(15, GPIO.LOW) #R2
+ 	GPIO.output(18, GPIO.LOW) #R4
+
 # #other option function a la go motor 
 # def go_location(azimuth)	
 # 	go_clockwise() #goes clockwise until notches = azimuth notch data 
@@ -341,17 +340,6 @@ my_callback(test)
 
 #except KeyboardInterrupt:
 #	GPIO.cleanup()
-
-#logic for IR beam break home position
-#initial_positon = [0]
-#final_position = [494]
-#try:
-#	if(initial_position != 494):
-#		print("Not in home position. Going to home position")
-#	else:
-#		print("In home position")
-#
-#except:
 #END OF NOT TESTED
 
 #Raised exception when trying to slew to an invalid azimuth angle
