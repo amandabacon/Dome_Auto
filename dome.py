@@ -59,11 +59,11 @@ try:
 		button_status_cc = GPIO.input(8)
 		if button_status_cc == False:
 			print("Pressed")
-#			GPIO.input(11, GPIO.HIGH) #R0,R00
-# 			GPIO.input(13, GPIO.HIGH) #R1
-# 			GPIO.input(16, GPIO.HIGH) #R3
-# 			GPIO.input(15, GPIO.LOW) #R2
-# 			GPIO.input(18, GPIO.LOW) #R4
+#			GPIO.output(11, GPIO.HIGH) #R0,R00
+# 			GPIO.output(13, GPIO.HIGH) #R1
+# 			GPIO.output(16, GPIO.HIGH) #R3
+# 			GPIO.output(15, GPIO.LOW) #R2
+# 			GPIO.output(18, GPIO.LOW) #R4
 
 		else:
 			print("Not pressed")
@@ -79,11 +79,11 @@ try:
 		button_status_c = GPIO.input(7)
 		if button_status_c == False:
 			print("Pressed")
-#			GPIO.input(15, GPIO.HIGH) #R2
-# 			GPIO.input(18, GPIO.HIGH) #R4
-# 			GPIO.input(11, GPIO.LOW) #R0,R00
-# 			GPIO.input(13, GPIO.LOW) #R1
-# 			GPIO.input(16, GPIO.LOW) #R3
+#			GPIO.output(15, GPIO.HIGH) #R2
+# 			GPIO.output(18, GPIO.HIGH) #R4
+# 			GPIO.output(11, GPIO.LOW) #R0,R00
+# 			GPIO.output(13, GPIO.LOW) #R1
+# 			GPIO.output(16, GPIO.LOW) #R3
 		else:
 			print("Not pressed")
 
@@ -274,25 +274,25 @@ my_callback(test)
 #	return azimuth
 
 #def go_clockwise() #sets relays in state B
-# 	GPIO.input(15, GPIO.HIGH) #R2
-# 	GPIO.input(18, GPIO.HIGH) #R4
-# 	GPIO.input(11, GPIO.LOW) #R0,R00
-# 	GPIO.input(13, GPIO.LOW) #R1
-# 	GPIO.input(16, GPIO.LOW) #R3
+# 	GPIO.output(15, GPIO.HIGH) #R2
+# 	GPIO.output(18, GPIO.HIGH) #R4
+# 	GPIO.output(11, GPIO.LOW) #R0,R00
+# 	GPIO.output(13, GPIO.LOW) #R1
+# 	GPIO.output(16, GPIO.LOW) #R3
 #
 # def go_counterwise() #sets relays in state A
-#	GPIO.input(11, GPIO.HIGH) #R0,R00
-# 	GPIO.input(13, GPIO.HIGH) #R1
-# 	GPIO.input(16, GPIO.HIGH) #R3
-# 	GPIO.input(15, GPIO.LOW) #R2
-# 	GPIO.input(18, GPIO.LOW) #R4
+#	GPIO.output(11, GPIO.HIGH) #R0,R00
+# 	GPIO.output(13, GPIO.HIGH) #R1
+# 	GPIO.output(16, GPIO.HIGH) #R3
+# 	GPIO.output(15, GPIO.LOW) #R2
+# 	GPIO.output(18, GPIO.LOW) #R4
 #
 #def stop_motor() #sets all Relays to low
-#	GPIO.input(11, GPIO.LOW) #R0,R00
-# 	GPIO.input(13, GPIO.LOW) #R1
-# 	GPIO.input(16, GPIO.LOW) #R3
-# 	GPIO.input(15, GPIO.LOW) #R2
-# 	GPIO.input(18, GPIO.LOW) #R4
+#	GPIO.output(11, GPIO.LOW) #R0,R00
+# 	GPIO.output(13, GPIO.LOW) #R1
+# 	GPIO.output(16, GPIO.LOW) #R3
+# 	GPIO.output(15, GPIO.LOW) #R2
+# 	GPIO.output(18, GPIO.LOW) #R4
 #
 # #other option function a la go motor 
 # def go_location(azimuth)	
