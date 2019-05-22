@@ -28,4 +28,4 @@ GPIO_pin_buttons = [7,8,10,22] #7,8,10 are I2C and UART
 #Need 10 K Ohm resistor (only if not using pull_up_down)
 #One for position location
 #One for home location
-GPIO_pin_IR = [36,37] #all GPIO only
+GPIO_pin_IR = [36,35] #all GPIO only
