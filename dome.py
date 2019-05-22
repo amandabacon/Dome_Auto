@@ -200,11 +200,11 @@ GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 			print("solid")
 
 #IR beam break for home test
-GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 	while True:
-		if(GPIO.input(37) == 0):
+		if(GPIO.input(35) == 0):
 			print("Beam interference #2")
-		if(GPIO.input(37) == 1):
+		if(GPIO.input(35) == 1):
 			print("solid #2")
 
 #IR Beam Break Sensor Notch Logic--adaption of option 2 below
