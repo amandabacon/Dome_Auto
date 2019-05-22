@@ -215,10 +215,15 @@ def my_callback(test):
         test = GPIO.input(36)
         if test == 0:
             print("interfere")
+	    notch_signal == 0
+	    return notch_signal
+		
 ##            notch_ir = test
 ##            return notch_ir
         if test != 0:
             print("solid")
+	    notch_signal == 1
+	    return notch_signal
 ##            notch_ir = test
 ##            return notch_ir
         GPIO.add_event_detect(36, GPIO.BOTH, callback = my_callback)
@@ -299,7 +304,7 @@ my_callback(test)
 # 	go_clockwise() #goes clockwise until notches = azimuth notch data 
 #	notches = 0 
 #	while notches < azimuth 
-#		if(GPIO.input(37) == 0):
+#		if (notch_signal == 0):
 #			notches == notches + 1 
 #			print(notches)
 #		else: 
@@ -311,7 +316,7 @@ my_callback(test)
 #	if(notches < azimuth): 
 #		go_clockwise() #goes clockwise until notches = azimuth notch data
 #		while notches < azimuth 
-#			if(GPIO.input(37) == 0):
+#			if(notch_signal == 0):
 #				notches == notches + 1 
 #				print(notches)
 #			else: 
@@ -320,7 +325,7 @@ my_callback(test)
 #	if(notches > azimuth): 
 #		go_counterwise() #goes counterwise until notches = azimuth notch data (backwards) 
 #		while notches > azimuth 
-#			if(GPIO.input(37) == 0):
+#			if(notch_signal == 0):
 #				notches == notches - 1 
 #				print(notches)
 #			else: 
