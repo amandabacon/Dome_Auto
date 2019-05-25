@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-#--------------------------------------------------------
-#Author(s): Amanda Bacon	    			-
-#Automation of Stickney Observatory--pinout information -
-#--------------------------------------------------------
+#------------------------------------------------------------------------
+#Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell	-
+#Automation of Stickney Observatory--pinout information			-
+#------------------------------------------------------------------------
 
 #Relays (6 total) Require GND,VCC,CNTRL
 #Two for hardware safety--one GPIO pin together

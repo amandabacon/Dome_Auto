@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-#------------------------------------
-#Author(s): Amanda Bacon            -
-#Automation of Stickney Observatory -
-#------------------------------------
+#------------------------------------------------------------------------
+#Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell	-
+#Automation of Stickney Observatory					-
+#------------------------------------------------------------------------
 
 import time
 from datetime import datetime
