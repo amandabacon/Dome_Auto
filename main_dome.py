@@ -67,6 +67,7 @@ GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 #Motor functions
 #clockwise movement
 def go_clockwise():
+    print("Moving clockwise.")
     GPIO.output(11, GPIO.HIGH) #R0,R00
     GPIO.output(13, GPIO.LOW) #R1
     GPIO.output(16, GPIO.HIGH) #R3
@@ -75,6 +76,7 @@ def go_clockwise():
 
 #counter clockwise movement
 def go_counter_clockwise():
+    print("Moving counter clockwise.")
     GPIO.output(15, GPIO.HIGH) #R2
     GPIO.output(18, GPIO.HIGH) #R4
     GPIO.output(11, GPIO.HIGH) #R0,R00
@@ -83,33 +85,35 @@ def go_counter_clockwise():
 
 #stop the motor
 def stop_motor():
+    print("Stopping motor.")
     GPIO.output(11, GPIO.LOW) #R0,R00
     GPIO.output(13, GPIO.LOW) #R1
     GPIO.output(15, GPIO.LOW) #R2
     GPIO.output(16, GPIO.LOW) #R3
     GPIO.output(18, GPIO.LOW) #R4
 
+#True = 1, False = 0
 #Button clockwise and counter clockwise
 def moving(button_status_cc):
     button_status_cc = GPIO.input(8)
     button_status_c = GPIO.input(7)
-    if button_status_c == 0:
-        print("Clockwise button pressed. Moving counter clockwise.")
+    if button_status_c == False:
+        print("Clockwise button pressed. Moving clockwise.")
         GPIO.output(11, GPIO.HIGH) #R0,R00
         GPIO.output(13, GPIO.LOW) #R1
         GPIO.output(16, GPIO.HIGH) #R3
         GPIO.output(15, GPIO.LOW) #R2
         GPIO.output(18, GPIO.HIGH) #R4  
         print_state(input)
-    elif button_status_cc == 0:
-        print("Counter clockwise button pressed. Moving clockwise.")
+    elif button_status_cc == False:
+        print("Counter clockwise button pressed. Moving counter clockwise.")
         GPIO.output(15, GPIO.HIGH) #R2
         GPIO.output(18, GPIO.HIGH) #R4
         GPIO.output(11, GPIO.HIGH) #R0,R00
         GPIO.output(13, GPIO.HIGH) #R1
         GPIO.output(16, GPIO.HIGH) #R3
         print_state(input)
-    elif button_status_c == 1 and button_status_cc == 1:
+    elif button_status_c == True and button_status_cc == True:
         print("Not moving.")
         GPIO.output(11, GPIO.LOW) #R0,R00
         GPIO.output(13, GPIO.LOW) #R1
