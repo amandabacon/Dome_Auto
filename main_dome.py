@@ -128,6 +128,19 @@ GPIO.cleanup()
 #           print ("At home position.")
 #           stop_motor()
 
+# def go_location(azimuth, notches)
+#       while notches < azimuth
+#           go_clockwise()
+#       stop_motor()
+
+# def go_new_location(azimuth, notches)
+#       if(notches < azimuth):
+#           go_clockwise()
+#       elif(notches > azimuth):
+#           go_counterwise()
+#       else:
+#           stop_motor()
+
 #WORKS SEPARATELY
 #CC--sets 0,00,1,3 high (works)
 #def counterclockwise():
