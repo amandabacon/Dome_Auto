@@ -34,11 +34,11 @@ GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home sensor
 #notches = 0
 
 #Relays
-GPIO.setup(11, GPIO.OUT)
-GPIO.setup(13, GPIO.OUT)
-GPIO.setup(15, GPIO.OUT)
-GPIO.setup(16, GPIO.OUT)
-GPIO.setup(18, GPIO.OUT)
+GPIO.setup(11, GPIO.OUT) #R0,R00
+GPIO.setup(13, GPIO.OUT) #R1
+GPIO.setup(15, GPIO.OUT) #R2
+GPIO.setup(16, GPIO.OUT) #R3
+GPIO.setup(18, GPIO.OUT) #R4
 
 #IR SENSOR
 def print_state(input):
@@ -57,12 +57,37 @@ GPIO.add_event_detect(36, GPIO.BOTH, callback = print_state)
 def restart(e_stop):
     e_stop = GPIO.input(22)
     print("Set relays to low")
-    GPIO.output(15, GPIO.LOW)
-    GPIO.output(18, GPIO.LOW)
-    GPIO.output(13, GPIO.LOW)
-    GPIO.output(16, GPIO.LOW)
+    GPIO.output(15, GPIO.LOW) #R2
+    GPIO.output(18, GPIO.LOW) #R4
+    GPIO.output(13, GPIO.LOW) #R1
+    GPIO.output(16, GPIO.LOW) #R3
     os.system("sudo shutdown -r now") #sudo reboot
 GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
+
+#Motor functions
+#clockwise movement
+def go_clockwise():
+    GPIO.output(11, GPIO.HIGH) #R0,R00
+    GPIO.output(13, GPIO.LOW) #R1
+    GPIO.output(16, GPIO.HIGH) #R3
+    GPIO.output(15, GPIO.LOW) #R2
+    GPIO.output(18, GPIO.HIGH) #R4  
+
+#counter clockwise movement
+def go_counter_clockwise():
+    GPIO.output(15, GPIO.HIGH) #R2
+    GPIO.output(18, GPIO.HIGH) #R4
+    GPIO.output(11, GPIO.HIGH) #R0,R00
+    GPIO.output(13, GPIO.HIGH) #R1
+    GPIO.output(16, GPIO.HIGH) #R3
+
+#stop the motor
+def stop_motor():
+    GPIO.output(11, GPIO.LOW) #R0,R00
+    GPIO.output(13, GPIO.LOW) #R1
+    GPIO.output(15, GPIO.LOW) #R2
+    GPIO.output(16, GPIO.LOW) #R3
+    GPIO.output(18, GPIO.LOW) #R4
 
 #Button clockwise and counter clockwise
 def moving(button_status_cc):
@@ -86,11 +111,11 @@ def moving(button_status_cc):
         print_state(input)
     elif button_status_c == 1 and button_status_cc == 1:
         print("Not moving.")
-        GPIO.output(11, GPIO.LOW)
-        GPIO.output(13, GPIO.LOW)
-        GPIO.output(15, GPIO.LOW)
-        GPIO.output(16, GPIO.LOW)
-        GPIO.output(18, GPIO.LOW)
+        GPIO.output(11, GPIO.LOW) #R0,R00
+        GPIO.output(13, GPIO.LOW) #R1
+        GPIO.output(15, GPIO.LOW) #R2
+        GPIO.output(16, GPIO.LOW) #R3
+        GPIO.output(18, GPIO.LOW) #R4
 time.sleep(0.25)
 GPIO.add_event_detect(8, GPIO.FALLING, callback = moving, boucetime = 100)    
 GPIO.add_event_detect(7, GPIO.FALLING, callback = moving, bouncetime = 100)
@@ -100,36 +125,14 @@ try:
         pass
     
 except KeyboardInterrupt:
-    GPIO.output(15, GPIO.LOW)
-    GPIO.output(18, GPIO.LOW)
-    GPIO.output(11, GPIO.LOW)
-    GPIO.output(13, GPIO.LOW)
-    GPIO.output(16, GPIO.LOW)
+    GPIO.output(15, GPIO.LOW) #R2
+    GPIO.output(18, GPIO.LOW) #R4
+    GPIO.output(11, GPIO.LOW) #R0,R00
+    GPIO.output(13, GPIO.LOW) #R1
+    GPIO.output(16, GPIO.LOW) #R3
     GPIO.cleanup()
 
 #NOT TESTED BELOW
-    
-#Motor functions
-def go_clockwise():
-    GPIO.output(11, GPIO.HIGH) #R0,R00
-    GPIO.output(13, GPIO.LOW) #R1
-    GPIO.output(16, GPIO.HIGH) #R3
-    GPIO.output(15, GPIO.LOW) #R2
-    GPIO.output(18, GPIO.HIGH) #R4  
-
-def go_counterwise():
-    GPIO.output(15, GPIO.HIGH) #R2
-    GPIO.output(18, GPIO.HIGH) #R4
-    GPIO.output(11, GPIO.HIGH) #R0,R00
-    GPIO.output(13, GPIO.HIGH) #R1
-    GPIO.output(16, GPIO.HIGH) #R3
-
-def stop_motor():
-    GPIO.output(11, GPIO.LOW)
-    GPIO.output(13, GPIO.LOW)
-    GPIO.output(15, GPIO.LOW)
-    GPIO.output(16, GPIO.LOW)
-    GPIO.output(18, GPIO.LOW)
 
 #Home button
 button_status_home = GPIO.input(10)
