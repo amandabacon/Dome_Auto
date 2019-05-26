@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 #------------------------------------------------------------------------
-#Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell	-
-#Automation of Stickney Observatory					-
+#Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell      -
+#Automation of Stickney Observatory                                     -
 #------------------------------------------------------------------------
 
 import time
@@ -35,6 +35,7 @@ GPIO.setup(15, GPIO.OUT)
 GPIO.setup(16, GPIO.OUT)
 GPIO.setup(18, GPIO.OUT)
 
+#Button clockwise and counter clockwise
 def moving(button_status_cc):
     button_status_cc = GPIO.input(8)
     button_status_c = GPIO.input(7)
@@ -45,6 +46,7 @@ def moving(button_status_cc):
         GPIO.output(16, GPIO.HIGH) #R3
         GPIO.output(15, GPIO.LOW) #R2
         GPIO.output(18, GPIO.HIGH) #R4  
+        #should have notch count here
     elif button_status_cc == 0:
         print("Counter clockwise button pressed. Moving clockwise.")
         GPIO.output(15, GPIO.HIGH) #R2
@@ -52,6 +54,7 @@ def moving(button_status_cc):
         GPIO.output(11, GPIO.HIGH) #R0,R00
         GPIO.output(13, GPIO.HIGH) #R1
         GPIO.output(16, GPIO.HIGH) #R3
+        #should have notch count here
     elif button_status_c == 1 and button_status_cc == 1:
         print("Not moving.")
         GPIO.output(11, GPIO.LOW)
@@ -76,70 +79,85 @@ except KeyboardInterrupt:
 
 GPIO.cleanup()
 
-#IR SENSOR - works
-#GPIO.cleanup()
+#E stop button
+def restart(e_stop):
+    e_stop = GPIO.input(22)
+    os.system("Shutdown -r now")
+GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 
-#def print_state(input):
-#    input = GPIO.input(36)
-#    global notches
-#    if input != 0:
-#        print("solid")
-#        notches = notches + 1
-#        print(notches)
-#    else:
-#        print("interfere")
-#GPIO.add_event_detect(36, GPIO.BOTH, callback = print_state)
-#
-#while True:
-#    pass
+GPIO.cleanup()
 
-# def go_clockwise():
-#   GPIO.output(11, GPIO.HIGH) #R0,R00
-#   GPIO.output(13, GPIO.LOW) #R1
-#   GPIO.output(16, GPIO.HIGH) #R3
-#   GPIO.output(15, GPIO.LOW) #R2
-#   GPIO.output(18, GPIO.HIGH) #R4  
+#IR SENSOR
+def print_state(input):
+    input = GPIO.input(36)
+    global notches
+    if input != 0:
+        print("Solid")
+        notches = notches + 1
+        print(notches)
+    else:
+        print("Beam interference")
+GPIO.add_event_detect(36, GPIO.BOTH, callback = print_state)
 
-# def go_counterwise():
-#   GPIO.output(15, GPIO.HIGH) #R2
-#   GPIO.output(18, GPIO.HIGH) #R4
-#   GPIO.output(11, GPIO.HIGH) #R0,R00
-#   GPIO.output(13, GPIO.HIGH) #R1
-#   GPIO.output(16, GPIO.HIGH) #R3
+while True:
+    pass
 
-# def stop_motor():
-#   GPIO.output(11, GPIO.LOW)
-#   GPIO.output(13, GPIO.LOW)
-#   GPIO.output(15, GPIO.LOW)
-#   GPIO.output(16, GPIO.LOW)
-#   GPIO.output(18, GPIO.LOW)
+GPIO.cleanup()
 
-# attempt at home button logic 
-# button_status_h = GPIO.input(10)
-# home_sensor = GPIO.input(35)
-#
-# def go_home(button_status_h, home_sensor)
-#   if button_status_h == 0:
-#       print ("Home button pressed. Going home.")
-#       if home_sensor != 0: 
-#           print ("Not at home position.  Going home.")      
-#           go_clockwise()
-#       if home_sensor = 0:
-#           print ("At home position.")
-#           stop_motor()
+#Motor functions
+def go_clockwise():
+    GPIO.output(11, GPIO.HIGH) #R0,R00
+    GPIO.output(13, GPIO.LOW) #R1
+    GPIO.output(16, GPIO.HIGH) #R3
+    GPIO.output(15, GPIO.LOW) #R2
+    GPIO.output(18, GPIO.HIGH) #R4  
 
-# def go_location(azimuth, notches)
-#       while notches < azimuth
-#           go_clockwise()
-#       stop_motor()
+def go_counterwise():
+    GPIO.output(15, GPIO.HIGH) #R2
+    GPIO.output(18, GPIO.HIGH) #R4
+    GPIO.output(11, GPIO.HIGH) #R0,R00
+    GPIO.output(13, GPIO.HIGH) #R1
+    GPIO.output(16, GPIO.HIGH) #R3
 
-# def go_new_location(azimuth, notches)
-#       if(notches < azimuth):
-#           go_clockwise()
-#       elif(notches > azimuth):
-#           go_counterwise()
-#       else:
-#           stop_motor()
+def stop_motor():
+    GPIO.output(11, GPIO.LOW)
+    GPIO.output(13, GPIO.LOW)
+    GPIO.output(15, GPIO.LOW)
+    GPIO.output(16, GPIO.LOW)
+    GPIO.output(18, GPIO.LOW)
+
+#Home button
+button_status_home = GPIO.input(10)
+home_sensor = GPIO.input(35)
+def go_home(button_status_home, home_sensor)
+    if button_status_home == 0:
+        print ("Home button pressed. Going home.")
+        if home_sensor != 0: 
+            print ("Not at home position. Going home.")      
+            go_clockwise()
+        if home_sensor = 0:
+            print ("At home position.")
+            stop_motor()
+
+#NEED TO DEFINE NOTCHES
+            
+#Azimuth location
+def go_location(azimuth, notches)
+    while notches < azimuth
+        go_clockwise()
+        stop_motor()
+
+def go_new_location(azimuth, notches)
+    if(notches < azimuth):
+        go_clockwise()
+    elif(notches > azimuth):
+        go_counterwise()
+    else:
+        stop_motor()
+
+
+
+
 
 #WORKS SEPARATELY
 #CC--sets 0,00,1,3 high (works)
