@@ -63,6 +63,7 @@ def moving(button_status_cc):
         GPIO.output(18, GPIO.LOW)
 GPIO.add_event_detect(8, GPIO.FALLING, callback = moving)    
 GPIO.add_event_detect(7, GPIO.FALLING, callback = moving)
+
 try:
     while True:
         pass
@@ -97,6 +98,39 @@ GPIO.cleanup()
 #while True:
 #    pass
 
+# def go_clockwise():
+#   GPIO.output(11, GPIO.HIGH) #R0,R00
+#   GPIO.output(13, GPIO.LOW) #R1
+#   GPIO.output(16, GPIO.HIGH) #R3
+#   GPIO.output(15, GPIO.LOW) #R2
+#   GPIO.output(18, GPIO.HIGH) #R4  
+#
+# def go_counterwise():
+#   GPIO.output(15, GPIO.HIGH) #R2
+#   GPIO.output(18, GPIO.HIGH) #R4
+#   GPIO.output(11, GPIO.HIGH) #R0,R00
+#   GPIO.output(13, GPIO.HIGH) #R1
+#   GPIO.output(16, GPIO.HIGH) #R3
+# def stop_motor():
+#   GPIO.output(11, GPIO.LOW)
+#   GPIO.output(13, GPIO.LOW)
+#   GPIO.output(15, GPIO.LOW)
+#   GPIO.output(16, GPIO.LOW)
+#   GPIO.output(18, GPIO.LOW)
+
+# attempt at home button logic 
+# button_status_h = GPIO.input(10)
+# home_sensor = GPIO.input(35)
+#
+# def go_home(button_status_h, home_sensor)
+#   if button_status_h == 0:
+#       print ("Home button pressed. Going home.")
+#       if home_sensor != 0: 
+#           print ("Not at home position.  Going home.")      
+#           go_clockwise()
+#       if home_sensor = 0:
+#           print ("At home position.")
+#           stop_motor()
 
 #WORKS SEPARATELY
 #CC--sets 0,00,1,3 high (works)
