@@ -35,8 +35,6 @@ GPIO.setup(15, GPIO.OUT)
 GPIO.setup(16, GPIO.OUT)
 GPIO.setup(18, GPIO.OUT)
 
-#button_status_cc = GPIO.input(8)
-#button_status_c = GPIO.input(7)
 def moving(button_status_cc):
     button_status_cc = GPIO.input(8)
     button_status_c = GPIO.input(7)
@@ -80,19 +78,16 @@ GPIO.cleanup()
 
 #IR SENSOR - works
 #GPIO.cleanup()
-#
+
 #def print_state(input):
 #    input = GPIO.input(36)
-#    
 #    global notches
-#
 #    if input != 0:
 #        print("solid")
-#        notches = notches +1
+#        notches = notches + 1
 #        print(notches)
 #    else:
 #        print("interfere")
-#
 #GPIO.add_event_detect(36, GPIO.BOTH, callback = print_state)
 #
 #while True:
@@ -104,13 +99,14 @@ GPIO.cleanup()
 #   GPIO.output(16, GPIO.HIGH) #R3
 #   GPIO.output(15, GPIO.LOW) #R2
 #   GPIO.output(18, GPIO.HIGH) #R4  
-#
+
 # def go_counterwise():
 #   GPIO.output(15, GPIO.HIGH) #R2
 #   GPIO.output(18, GPIO.HIGH) #R4
 #   GPIO.output(11, GPIO.HIGH) #R0,R00
 #   GPIO.output(13, GPIO.HIGH) #R1
 #   GPIO.output(16, GPIO.HIGH) #R3
+
 # def stop_motor():
 #   GPIO.output(11, GPIO.LOW)
 #   GPIO.output(13, GPIO.LOW)
