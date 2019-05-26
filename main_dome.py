@@ -116,6 +116,13 @@ def moving(button_status_cc):
         GPIO.output(15, GPIO.LOW) #R2
         GPIO.output(16, GPIO.LOW) #R3
         GPIO.output(18, GPIO.LOW) #R4
+    if button_status_c == False and button_status_cc == False: #where False = pushing button
+        print("Not allowed to press both buttons. Not moving.")
+        GPIO.output(11, GPIO.LOW) #R0,R00
+        GPIO.output(13, GPIO.LOW) #R1
+        GPIO.output(15, GPIO.LOW) #R2
+        GPIO.output(16, GPIO.LOW) #R3
+        GPIO.output(18, GPIO.LOW) #R4
 time.sleep(0.25)
 GPIO.add_event_detect(8, GPIO.FALLING, callback = moving, boucetime = 100)    
 GPIO.add_event_detect(7, GPIO.FALLING, callback = moving, bouncetime = 100)
