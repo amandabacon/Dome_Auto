@@ -53,7 +53,7 @@ def print_state(input):
         print("Beam interference")
 GPIO.add_event_detect(36, GPIO.BOTH, callback = print_state)
 
-#E stop button
+#E stop button--completely quits program instead of rebooting (need to put in /etc/rc.local file)
 def restart(e_stop):
     e_stop = GPIO.input(22)
     print("Set relays to low")
@@ -91,8 +91,9 @@ def moving(button_status_cc):
         GPIO.output(15, GPIO.LOW)
         GPIO.output(16, GPIO.LOW)
         GPIO.output(18, GPIO.LOW)
-GPIO.add_event_detect(8, GPIO.FALLING, callback = moving)    
-GPIO.add_event_detect(7, GPIO.FALLING, callback = moving)
+time.sleep(0.25)
+GPIO.add_event_detect(8, GPIO.FALLING, callback = moving, boucetime = 100)    
+GPIO.add_event_detect(7, GPIO.FALLING, callback = moving, bouncetime = 100)
 
 try:
     while True:
