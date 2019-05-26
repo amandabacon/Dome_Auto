@@ -19,14 +19,14 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 
 #Buttons
-GPIO.setup(8, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(10, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(8, GPIO.IN, pull_up_down = GPIO.PUD_UP) #counter clockwise
+GPIO.setup(10, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home
+GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP) #e stop
+GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #clockwise
 
 #IR
-GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP) #notch count
+GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home sensor
 
 #Relays
 GPIO.setup(11, GPIO.OUT)
