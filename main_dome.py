@@ -12,6 +12,10 @@ import smbus
 import sys
 import os
 
+notches = 0
+
+GPIO.cleanup()
+
 #set warnings to false
 GPIO.setwarnings(False)
 
@@ -27,7 +31,7 @@ GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #clockwise
 #IR
 GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP) #notch count
 GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home sensor
-notches = 0
+#notches = 0
 
 #Relays
 GPIO.setup(11, GPIO.OUT)
@@ -35,6 +39,30 @@ GPIO.setup(13, GPIO.OUT)
 GPIO.setup(15, GPIO.OUT)
 GPIO.setup(16, GPIO.OUT)
 GPIO.setup(18, GPIO.OUT)
+
+#IR SENSOR
+def print_state(input):
+    input = GPIO.input(36)
+    print("This is the input", input) #0 for interference, 1 for solid
+    global notches
+    if input != 0:
+        print("Solid")
+        notches = notches + 1
+        print(notches)
+    else:
+        print("Beam interference")
+GPIO.add_event_detect(36, GPIO.BOTH, callback = print_state)
+
+#E stop button
+def restart(e_stop):
+    e_stop = GPIO.input(22)
+    print("Set relays to low")
+    GPIO.output(15, GPIO.LOW)
+    GPIO.output(18, GPIO.LOW)
+    GPIO.output(13, GPIO.LOW)
+    GPIO.output(16, GPIO.LOW)
+    os.system("sudo shutdown -r now") #sudo reboot
+GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 
 #Button clockwise and counter clockwise
 def moving(button_status_cc):
@@ -47,7 +75,7 @@ def moving(button_status_cc):
         GPIO.output(16, GPIO.HIGH) #R3
         GPIO.output(15, GPIO.LOW) #R2
         GPIO.output(18, GPIO.HIGH) #R4  
-        #should have notch count here
+        print_state(input)
     elif button_status_cc == 0:
         print("Counter clockwise button pressed. Moving clockwise.")
         GPIO.output(15, GPIO.HIGH) #R2
@@ -55,7 +83,7 @@ def moving(button_status_cc):
         GPIO.output(11, GPIO.HIGH) #R0,R00
         GPIO.output(13, GPIO.HIGH) #R1
         GPIO.output(16, GPIO.HIGH) #R3
-        #should have notch count here
+        print_state(input)
     elif button_status_c == 1 and button_status_cc == 1:
         print("Not moving.")
         GPIO.output(11, GPIO.LOW)
@@ -78,42 +106,8 @@ except KeyboardInterrupt:
     GPIO.output(16, GPIO.LOW)
     GPIO.cleanup()
 
-GPIO.cleanup()
-
-#E stop button
-def restart(e_stop):
-    e_stop = GPIO.input(22)
-    print("Set relays to low")
-    GPIO.output(15, GPIO.LOW)
-    GPIO.output(18, GPIO.LOW)
-#    GPIO.output(11, GPIO.LOW)
-    GPIO.output(13, GPIO.LOW)
-    GPIO.output(16, GPIO.LOW)
-    os.system("sudo shutdown -r now") #sudo reboot
-GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
-
-while True:
-    pass
-
-GPIO.cleanup()
-
-#IR SENSOR
-def print_state(input):
-    input = GPIO.input(36)
-    global notches
-    if input != 0:
-        print("Solid")
-        notches = notches + 1
-        print(notches)
-    else:
-        print("Beam interference")
-GPIO.add_event_detect(36, GPIO.BOTH, callback = print_state)
-
-while True:
-    pass
-
-GPIO.cleanup()
-
+#NOT TESTED BELOW
+    
 #Motor functions
 def go_clockwise():
     GPIO.output(11, GPIO.HIGH) #R0,R00
@@ -148,8 +142,6 @@ def go_home(button_status_home, home_sensor)
         if home_sensor = 0:
             print ("At home position.")
             stop_motor()
-
-#NEED TO DEFINE NOTCHES
             
 #Azimuth location
 def go_location(azimuth, notches)
