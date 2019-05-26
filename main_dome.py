@@ -27,6 +27,7 @@ GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #clockwise
 #IR
 GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP) #notch count
 GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home sensor
+notches = 0
 
 #Relays
 GPIO.setup(11, GPIO.OUT)
@@ -82,8 +83,17 @@ GPIO.cleanup()
 #E stop button
 def restart(e_stop):
     e_stop = GPIO.input(22)
-    os.system("Shutdown -r now")
+    print("Set relays to low")
+    GPIO.output(15, GPIO.LOW)
+    GPIO.output(18, GPIO.LOW)
+#    GPIO.output(11, GPIO.LOW)
+    GPIO.output(13, GPIO.LOW)
+    GPIO.output(16, GPIO.LOW)
+    os.system("sudo shutdown -r now") #sudo reboot
 GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
+
+while True:
+    pass
 
 GPIO.cleanup()
 
