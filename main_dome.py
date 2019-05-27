@@ -148,23 +148,23 @@ except KeyboardInterrupt:
 #Home button
 button_status_home = GPIO.input(10)
 home_sensor = GPIO.input(35)
-def go_home(button_status_home, home_sensor)
+def go_home(button_status_home, home_sensor):
     if button_status_home == 0:
         print ("Home button pressed. Going home.")
         if home_sensor != 0: 
             print ("Not at home position. Going home.")      
             go_clockwise()
-        if home_sensor = 0:
+        if home_sensor == 0:
             print ("At home position.")
             stop_motor()
             
 #Azimuth location
-def go_location(azimuth, notches)
-    while notches < azimuth
+def go_location(azimuth, notches):
+    while notches < azimuth:
         go_clockwise()
         stop_motor()
 
-def go_new_location(azimuth, notches)
+def go_new_location(azimuth, notches):
     if(notches < azimuth):
         go_clockwise()
     elif(notches > azimuth):
