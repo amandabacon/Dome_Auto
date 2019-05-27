@@ -92,6 +92,20 @@ def stop_motor():
     GPIO.output(16, GPIO.LOW) #R3
     GPIO.output(18, GPIO.LOW) #R4
 
+#Home button
+def go_home(button_status_home):
+    button_status_home = GPIO.input(10)
+    home_sensor = GPIO.input(35)
+    if button_status_home == False:
+        print ("Home button pressed. Going home.")
+        if home_sensor != 0: 
+            print ("Not at home position. Going home.")      
+            go_clockwise()
+        if home_sensor == 0:
+            print ("At home position.")
+            stop_motor()
+GPIO.add_event_detect(10, GPIO.FALLING, callback = go_home)
+    
 #True = 1, False = 0
 #Button clockwise and counter clockwise
 def moving(button_status_cc):
@@ -144,19 +158,6 @@ except KeyboardInterrupt:
     GPIO.cleanup()
 
 #NOT TESTED BELOW
-
-#Home button
-button_status_home = GPIO.input(10)
-home_sensor = GPIO.input(35)
-def go_home(button_status_home, home_sensor):
-    if button_status_home == 0:
-        print ("Home button pressed. Going home.")
-        if home_sensor != 0: 
-            print ("Not at home position. Going home.")      
-            go_clockwise()
-        if home_sensor == 0:
-            print ("At home position.")
-            stop_motor()
             
 #Azimuth location
 def go_location(azimuth, notches):
