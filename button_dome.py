@@ -48,6 +48,7 @@ GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home IR sensor
 #Relays Setup
 power_relays = (11,16,18)
 directional_relays = (13,15)
+not_pushed_relays = (11,13,15,16,18)
 GPIO.setup(11, GPIO.OUT) #R0,R00 relay
 GPIO.setup(13, GPIO.OUT) #R1 relay
 GPIO.setup(15, GPIO.OUT) #R2 relay
@@ -183,6 +184,7 @@ def moving(button_status_cc):
     elif button_status_c == True and button_status_cc == True: #if both clockwise and counter clockwise are not pressed,
         #dome is not moving
         print("Not moving.")
+        GPIO.output(not_pushed_relays, GPIO.LOW)
 #        GPIO.output(11, GPIO.LOW) #R0,R00
 #        GPIO.output(13, GPIO.LOW) #R1
 #        GPIO.output(15, GPIO.LOW) #R2
@@ -190,6 +192,7 @@ def moving(button_status_cc):
 #        GPIO.output(18, GPIO.LOW) #R4
     if button_status_c == False and button_status_cc == False: #Error handling. User cannot push both buttons. Dome will not move.
         print("Not allowed to press both buttons. Not moving.")
+        GPIO.output(not_pushed_relays, GPIO.LOW)
 #        GPIO.output(11, GPIO.LOW) #R0,R00
 #        GPIO.output(13, GPIO.LOW) #R1
 #        GPIO.output(15, GPIO.LOW) #R2
