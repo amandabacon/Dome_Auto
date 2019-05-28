@@ -46,6 +46,8 @@ GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP) #notch count IR sensor
 GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home IR sensor
 
 #Relays Setup
+power_relays = (11,16,18)
+directional_relays = (13,15)
 GPIO.setup(11, GPIO.OUT) #R0,R00 relay
 GPIO.setup(13, GPIO.OUT) #R1 relay
 GPIO.setup(15, GPIO.OUT) #R2 relay
@@ -158,6 +160,9 @@ def moving(button_status_cc):
     button_status_c = GPIO.input(7)
     if button_status_c == False: #if the clockwise button is pressed, print status and set relays to high and low
         print("Clockwise button pressed. Moving clockwise.")
+        GPIO.output(directional_relays, GPIO.LOW)
+        time.sleep(0.2)
+        GPIO.output(power_relays, GPIO.HIGH)
 #        GPIO.output(11, GPIO.HIGH) #R0,R00
 #        GPIO.output(13, GPIO.LOW) #R1
 #        GPIO.output(16, GPIO.HIGH) #R3
@@ -166,6 +171,9 @@ def moving(button_status_cc):
         print_IR_state(input) #call the IR notch count function to obtain counts
     elif button_status_cc == False: #if the counterclockwise button is pressed, print the status and set all relays to high.
         print("Counter clockwise button pressed. Moving counter clockwise.")
+        GPIO.output(directional_relays, GPIO.HIGH)
+        time.sleep(0.2)
+        GPIO.output(power_relays, GPIO.HIGH)
 #        GPIO.output(15, GPIO.HIGH) #R2
 #        GPIO.output(18, GPIO.HIGH) #R4
 #        GPIO.output(11, GPIO.HIGH) #R0,R00
