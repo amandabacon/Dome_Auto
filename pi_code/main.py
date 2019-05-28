@@ -2,7 +2,7 @@
 
 #--------------------------------------------------------------------
 #Authors: Amanda Bacon, Anna McNiff, Emma Salazar and Josie Bunnell -
-#Test python document with important shtuff to test functions       -
+#Test python document with important setup to test functions        -
 #--------------------------------------------------------------------
 
 import time
