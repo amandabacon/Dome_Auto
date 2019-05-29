@@ -148,7 +148,7 @@ def at_home(home_sensor):
         print ("At home position.") 
         stop_motor()
 time.sleep(0.3) # adds to the debounce of buttons
-GPIO.add_event_detect(10, GPIO.FALLING, callback = go_home, bouncetime = 100) # bouncetime adds a debounce to the buttons
+GPIO.add_event_detect(10, GPIO.FALLING, callback = go_home, bouncetime = 200) # bouncetime adds a debounce to the buttons
 GPIO.add_event_detect(35, GPIO.FALLING, callback = at_home)
 
 # True = 1, False = 0
@@ -173,14 +173,40 @@ def moving(button_status_cc):
         GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
         time.sleep(0.1) # allow for directional relays to switch before power_relays
         GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
+# Error handling with buttons:
     if button_status_c == False and button_status_cc == False: # Error handling. User cannot push both buttons. Dome will not move.
-        print("Not allowed to press both buttons. Not moving.")
+        print("Not allowed to press both clockwise and counterclockwise. Not moving.")
+        GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+        time.sleep(0.1) # allow for directional relays to switch before power_relays
+        GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
+    if button_status_c == False and button_status_home == False: # Error handling. User cannot push both buttons. Dome will not move.
+        print("Not allowed to press both clockwise and home. Not moving.")
+        GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+        time.sleep(0.1) # allow for directional relays to switch before power_relays
+        GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
+    if button_status_cc == False and button_status_home == False: # Error handling. User cannot push both buttons. Dome will not move.
+        print("Not allowed to press both counterclockwise and home. Not moving.")
+        GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+        time.sleep(0.1) # allow for directional relays to switch before power_relays
+        GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
+    if button_status_c == False and e_stop == False: # Error handling. User cannot push both buttons. Dome will not move.
+        print("Not allowed to press both clockwise and e stop. Not moving.")
+        GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+        time.sleep(0.1) # allow for directional relays to switch before power_relays
+        GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
+    if button_status_cc == False and e_stop == False: # Error handling. User cannot push both buttons. Dome will not move.
+        print("Not allowed to press both counter clockwise and e stop. Not moving.")
+        GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+        time.sleep(0.1) # allow for directional relays to switch before power_relays
+        GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
+    if button_status_home == False and e_stop == False: # Error handling. User cannot push both buttons. Dome will not move.
+        print("Not allowed to press both home and e stop. Not moving.")
         GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
         time.sleep(0.1) # allow for directional relays to switch before power_relays
         GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
 time.sleep(0.3) # adds to the debounce of buttons
-GPIO.add_event_detect(8, GPIO.FALLING, callback = moving, bouncetime = 100) # bouncetime adds a debounce to the buttons
-GPIO.add_event_detect(7, GPIO.FALLING, callback = moving, bouncetime = 100) # bouncetime adds a debounce to the buttons
+GPIO.add_event_detect(8, GPIO.FALLING, callback = moving, bouncetime = 200) # bouncetime adds a debounce to the buttons
+GPIO.add_event_detect(7, GPIO.FALLING, callback = moving, bouncetime = 200) # bouncetime adds a debounce to the buttons
 
 try:
     while True:
