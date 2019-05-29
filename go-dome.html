@@ -1,0 +1,26 @@
+<html>
+<head><title>Welcome to the Stickney Observatory Dome Control</title>
+</head>
+<body>
+
+Hello user. What azimuth is the telescope going to?
+<form action="http://raspberrypi23.local:5000/next-location" method="POST">
+<br>
+Azimuth:
+<input type="number" name="azimuth">
+<input type="submit" name="go" value="Go">
+<br>
+Do you want to go home?
+<input type="submit" name="home" value="Go Home">
+<br>
+Are you finished using the dome?
+<input type="submit" name="shutdown" value="Shut Down System">
+<br>
+Emergency Stop
+<input type="submit" name="estop" value="Emergency Stop">
+<br>
+
+</form>
+</body>
+</html>
+
