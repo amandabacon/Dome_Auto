@@ -52,6 +52,7 @@ GPIO.setup(15, GPIO.OUT) # R2 relay
 GPIO.setup(16, GPIO.OUT) # R3 relay
 GPIO.setup(18, GPIO.OUT) # R4 relay
 
+#DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 # Functions:
 # IR beam break sensor notch count function (returns notch count and does not print anything)
 def notch_counter(input):
@@ -74,6 +75,7 @@ def restart(e_stop):
     GPIO.output(16, GPIO.LOW) #R3
     os.system("sudo shutdown -r now") #sudo reboot
 #GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
+#DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 
 # Motor functions:
 # Dome clockwise movement
