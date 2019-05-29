@@ -7,7 +7,7 @@
 # Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell -
 #--------------------------------------------------------------------
 
-# Import stuff for our program
+# Import modules for our program
 import time
 from datetime import datetime
 import RPi.GPIO as GPIO
@@ -15,49 +15,45 @@ import smbus
 import sys
 import os
 
-# UI import stuff
+# UI imports
 from flask import Flask, request, abort, jsonify, url_for, redirect, render_template
 import json
 
-# create an instance of Flask and tie it to this python program
+# Create an instance of Flask and tie it to this python program
 app = Flask(__name__)
 
 # Set our notch counter to start at 0
 notches = 0
 
-
-#GPIO Setup
-
-#set warnings to false
+# GPIO Setup:
+# Set warnings to false
 GPIO.setwarnings(False)
 
-#set up mode for GPIO
+# Set up mode for GPIO
 GPIO.setmode(GPIO.BOARD)
 
-#Buttons Setup
-GPIO.setup(8, GPIO.IN, pull_up_down = GPIO.PUD_UP) #counter clockwise button
-GPIO.setup(10, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home button
-GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP) #e stop button
-GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) #clockwise button
+# Buttons Setup
+GPIO.setup(8, GPIO.IN, pull_up_down = GPIO.PUD_UP) # counter clockwise button
+GPIO.setup(10, GPIO.IN, pull_up_down = GPIO.PUD_UP) # home button
+GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP) # e stop button
+GPIO.setup(7, GPIO.IN, pull_up_down = GPIO.PUD_UP) # clockwise button
 
-#IR Sensors Setup
-GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP) #notch count IR sensor
-GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home IR sensor
+# IR Sensors Setup
+GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP) # notch count IR sensor
+GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) # home IR sensor
 
-#Relays Setup
-power_relays = (11,16,18)
-directional_relays = (13,15)
-not_pushed_relays = (11,13,15,16,18)
-GPIO.setup(11, GPIO.OUT) #R0,R00 relay
-GPIO.setup(13, GPIO.OUT) #R1 relay
-GPIO.setup(15, GPIO.OUT) #R2 relay
-GPIO.setup(16, GPIO.OUT) #R3 relay
-GPIO.setup(18, GPIO.OUT) #R4 relay
+# Relays Setup
+power_relays = (11,16,18) # allows for simultaneous pin manipulation, where 'power' means dome movement 
+directional_relays = (13,15) # allows for simultaneous pin manipulation, where 'directional' means setup of relays 
+not_pushed_relays = (11,13,15,16,18) # allows for simultaneous pin manipulation by setting all relays to low
+GPIO.setup(11, GPIO.OUT) # R0,R00 relay
+GPIO.setup(13, GPIO.OUT) # R1 relay
+GPIO.setup(15, GPIO.OUT) # R2 relay
+GPIO.setup(16, GPIO.OUT) # R3 relay
+GPIO.setup(18, GPIO.OUT) # R4 relay
 
-
-#Functions
-
-# IR Sensor Counting Notches Function (which returns the notch count and does not print anything)
+# Functions:
+# IR beam break sensor notch count function (returns notch count and does not print anything)
 def notch_counter(input):
     input = GPIO.input(36)
     direction_relay = GPIO.input(13) # Emma: I added this variable by chosing an arbitrary relay that goes high or low depending on the direction so we can count based on the direction the dome is moving
@@ -79,41 +75,34 @@ def restart(e_stop):
     os.system("sudo shutdown -r now") #sudo reboot
 #GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 
-#Motor functions
-#clockwise movement
+# Motor functions:
+# Dome clockwise movement
 def go_clockwise():
+    GPIO.output(directional_relays, GPIO.LOW) # set relays R1 and R2 to low simultaneously
+    time.sleep(0.1) # allow for directional relays to switch before power_relays
+    GPIO.output(power_relays, GPIO.HIGH) # set relays R0,R00,R3,R4 to high simultaneously
 #    print("Moving clockwise.")
-    GPIO.output(11, GPIO.HIGH) #R0,R00
-    GPIO.output(13, GPIO.LOW) #R1
-    GPIO.output(16, GPIO.HIGH) #R3
-    GPIO.output(15, GPIO.LOW) #R2
-    GPIO.output(18, GPIO.HIGH) #R4
 
-#counter clockwise movement
+# Dome counter clockwise movement
 def go_counter_clockwise():
+    GPIO.output(directional_relays, GPIO.HIGH)  #set relays R1 and R2 to high simultaneously
+    time.sleep(0.1) #allow for directional relays to switch before power_relays
+    GPIO.output(power_relays, GPIO.HIGH) # set relays R0,R00,R3,R4 to high simultaneously
 #    print("Moving counter clockwise.")
-    GPIO.output(13, GPIO.HIGH) #R1
-    GPIO.output(15, GPIO.HIGH) #R2
-    time.sleep(0.1)
-    GPIO.output(16, GPIO.HIGH) #R3
-    GPIO.output(18, GPIO.HIGH) #R4
-    GPIO.output(11, GPIO.HIGH) #R0,R00
 
-#stop the motor
+# Stop the motor
 def stop_motor():
-    print("Stopping motor.")
-    GPIO.output(11, GPIO.LOW) #R0,R00
-    GPIO.output(13, GPIO.LOW) #R1
-    GPIO.output(15, GPIO.LOW) #R2
-    GPIO.output(16, GPIO.LOW) #R3
-    GPIO.output(18, GPIO.LOW) #R4
+    GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+    time.sleep(0.1) # allow for directional relays to switch before power_relays
+    GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
+#    print("Stopping motor.")
 
-# Get our azimuth
+# Get our azimuth input
 def get_azimuth(user_input):
     user_azimuth = user_input * (494/360)
     return user_azimuth
 
-# Go to our first location given user input from an html page
+# Go to our location given user input from an html page
 @app.route("/next-location", methods=['POST'])
 def go_location():
     go_location_string = '<html>\n <head><title>Welcome to the Stickney Observatory Dome Control</title>\n </head>\n <body>\n \n Hello user. What azimuth is the telescope going to?\n <form action="http://raspberrypi23.local:5000/next-location" method="POST">\n <br>\n Azimuth:\n <input type="number" name="azimuth">\n <input type="submit" name="go" value="Go">\n <br>\n Do you want to go home?\n <input type="submit" name="home" value="Go Home">\n <br>\n Are you finished using the dome?\n <input type="submit" name="shutdown" value="Shut Down System">\n <br>\n Emergency Stop\n <input type="submit" name="estop" value="Emergency Stop">\n <br>\n \n </form>\n </body>\n </html>'
@@ -214,5 +203,6 @@ def go_location():
 #    GPIO.output(16, GPIO.LOW) #R3
 #    GPIO.cleanup()
 
-#GPIO.cleanup()
+# Clean up loose ends of program
+GPIO.cleanup()
 
