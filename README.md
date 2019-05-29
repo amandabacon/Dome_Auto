@@ -14,3 +14,8 @@ This model is run and tested on Mac and Linux OS.
 -IR Beam Break Sensors (3mm and 5mm): https://www.adafruit.com/product/2167
 
 -LED Buttons: https://www.amazon.com/Ulincos-Momentary-Stainless-Suitable-Mounting/dp/B01N1F8OEQ/ref=sr_1_2?qid=1559047861&refinements=p_n_feature_seven_browse-bin%3A5485702011&s=industrial&sr=1-2
+
+# Need To Do:
+-Figure out issues with R2 (counter clockwise motion). For now it is commented out in the code
+
+-Error handling for IR sensors
