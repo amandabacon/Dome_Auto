@@ -15,12 +15,16 @@ import smbus
 import sys
 import os
 
+print("restart test")
+
 # UI import
 from flask import Flask, request, abort, jsonify
 import json
 
 # Create an instance of Flask and tie it to this python program
 app = Flask(__name__)
+
+print("restart test")
 
 # Set our notch counter to start at 0
 notches = 0
@@ -60,7 +64,6 @@ directional_relays = (13,15) # allows for simultaneous pin manipulation, where '
 #GPIO.setup(16, GPIO.OUT) # R3 relay
 #GPIO.setup(18, GPIO.OUT) # R4 relay
 
-#DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 # IR Sensor notch count function (prints the beam state and notch count)
 def print_IR_state(input):
     input = GPIO.input(36)
@@ -79,22 +82,13 @@ def notch_counter(input):
     input = GPIO.input(36)
     direction_relay = GPIO.input(13) # use this variable after chosing an arbitrary relay that goes high or low depending on the direction. We count based on the direction the dome is moving
     global notches
-    if input != 0: # and direction_relay == False:--the sensor is in a notch hole, and the dome is moving clockwise
+    if input != 0 and direction_relay == False: # the sensor is in a notch hole, and the dome is moving clockwise
         notches = notches + 1
-#    if input != 0 and direction_relay == True:--the sensor is in a notch hole, and the dome is moving counter clockwise
-#        notches = notches - 1 #thereby subtracting from the notch count
+        print(notches)
+    elif input != 0 and direction_relay == True: # the sensor is in a notch hole, and the dome is moving counter clockwise
+        notches = notches - 1 #thereby subtracting from the notch count
+        print(notches)
 GPIO.add_event_detect(36, GPIO.BOTH, callback = notch_counter) #waits for the sensor to sense a change in input
-
-#E stop button--completely quits program instead of rebooting (need to put in /etc/rc.local file)
-#When e stop button is pressed, set the relays to low and restart the code
-#def restart(e_stop):
-#    e_stop = GPIO.input(22)
-#    print("Set relays to low")
-#    GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
-#    time.sleep(0.1) # allow for directional relays to switch before power_relays
-#    GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
-#    os.system("sudo shutdown -r now") #sudo reboot
-#GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 
 # When e stop button is pressed, set the relays to low and restart the code
 def emergency_stop(e_stop):
@@ -110,10 +104,13 @@ def emergency_stop(e_stop):
 #    os.system('python "~/Dome/button_dome.py"')
     sys.exit(0)	
 GPIO.add_event_detect(22, GPIO.FALLING, callback = emergency_stop)
-#DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 
 # Error handling with buttons:
 def error_handle():
+    button_status_c = GPIO.input(7)
+    button_status_cc = GPIO.input(8)
+    button_status_home = GPIO.input(10)
+    e_stop = GPIO.input(22)
     if button_status_c == False and button_status_cc == False: # Error handling. User cannot push both buttons. Dome will not move.
         print("Not allowed to press both clockwise and counterclockwise. Not moving.")
         GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
@@ -136,7 +133,7 @@ def error_handle():
         GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
     if button_status_cc == False and e_stop == False: # Error handling. User cannot push both buttons. Dome will not move.
         print("Not allowed to press both counter clockwise and e stop. Not moving.")
-        GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+        GPIO.output(directional_relays, GPIO.LOW) # set relays R1 and R2 to low simultaneously
         time.sleep(0.1) # allow for directional relays to switch before power_relays
         GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
     if button_status_home == False and e_stop == False: # Error handling. User cannot push both buttons. Dome will not move.
@@ -149,21 +146,21 @@ def error_handle():
 # Dome clockwise movement, set specific relays to high and low
 def go_clockwise():
     GPIO.output(directional_relays, GPIO.LOW) # set relays R1 and R2 to low simultaneously
-    time.sleep(0.1) # allow for directional relays to switch before power_relays
+    time.sleep(0.2) # allow for directional relays to switch before power_relays
     GPIO.output(power_relays, GPIO.HIGH) # set relays R0,R00,R3,R4 to high simultaneously
     print("Moving clockwise.")
 
 # Dome counter clockwise movement, set all relays to high
 def go_counter_clockwise():
     GPIO.output(directional_relays, GPIO.HIGH)  #set relays R1 and R2 to high simultaneously
-    time.sleep(0.1) #allow for directional relays to switch before power_relays
+    time.sleep(0.2) #allow for directional relays to switch before power_relays
     GPIO.output(power_relays, GPIO.HIGH) # set relays R0,R00,R3,R4 to high simultaneously
     print("Moving counter clockwise.")
 
 # Stop the motor, set all relays to low
 def stop_motor():
     GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
-    time.sleep(0.1) # allow for directional relays to switch before power_relays
+    time.sleep(0.2) # allow for directional relays to switch before power_relays
     GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
     print("Stopping motor.")
 
@@ -171,48 +168,47 @@ def stop_motor():
 # When the user presses the home button, it will move in the clockwise direction until the beam is broken, indicating home position has been reached
 def go_home(button_status_home):
     button_status_home = GPIO.input(10)
+    home_sensor = GPIO.input(35)
     if button_status_home == False: # if button has been pressed,
         print("Home button pressed. Going home.")
-        
-# Once the dome is in the home position
-def at_home(home_sensor): 
-    home_sensor = GPIO.input(35)
     if home_sensor != 0: # if there is no intereference,
         go_clockwise() # move the dome in the clockwise direction
     if home_sensor == 0: # if there is interference,
-        print ("At home position.") 
+        print ("At home position.")
         stop_motor()
 time.sleep(0.3) # adds to the debounce of buttons
-GPIO.add_event_detect(10, GPIO.FALLING, callback = go_home, bouncetime = 200) # bouncetime adds a debounce to the buttons
-GPIO.add_event_detect(35, GPIO.FALLING, callback = at_home)
+GPIO.add_event_detect(10, GPIO.BOTH, callback = go_home, bouncetime = 300) # bouncetime adds a debounce to the buttons
+GPIO.add_event_detect(35, GPIO.FALLING, callback = go_home, bouncetime = 300)
 
 # True = 1, False = 0
 # Button clockwise and counter clockwise logic
 def moving(button_status_cc):
     button_status_cc = GPIO.input(8)
     button_status_c = GPIO.input(7)
+    button_status_home = GPIO.input(10)
+    e_stop = GPIO.input(22)
     if button_status_c == False: # if the clockwise button is pressed, print status and set relays to high and low
         print("Clockwise button pressed. Moving clockwise.")
         GPIO.output(directional_relays, GPIO.LOW) # set relays R1 and R2 to low simultaneously
-        time.sleep(0.1) # allow for directional relays to switch before power_relays
+        time.sleep(0.2) # allow for directional relays to switch before power_relays
         GPIO.output(power_relays, GPIO.HIGH) # set relays R0,R00,R3,R4 to high simultaneously
         print_IR_state(input) # call the IR notch count function to obtain counts
     elif button_status_cc == False: # if the counterclockwise button is pressed, print the status and set all relays to high.
         print("Counter clockwise button pressed. Moving counter clockwise.")
         GPIO.output(directional_relays, GPIO.HIGH)  #set relays R1 and R2 to high simultaneously
-        time.sleep(0.1) #allow for directional relays to switch before power_relays
+        time.sleep(0.2) #allow for directional relays to switch before power_relays
         GPIO.output(power_relays, GPIO.HIGH) # set relays R0,R00,R3,R4 to high simultaneously
         print_IR_state(input) # call the IR notch count function to obtain counts
     elif button_status_c == True and button_status_cc == True: # if both clockwise and counter clockwise are not pressed, dome is not moving
         print("Not moving.")
         GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
-        time.sleep(0.1) # allow for directional relays to switch before power_relays
+        time.sleep(0.2) # allow for directional relays to switch before power_relays
         GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
 # Error handling with buttons:
-	error_handle()
+        error_handle()
 time.sleep(0.3) # adds to the debounce of buttons
-GPIO.add_event_detect(8, GPIO.FALLING, callback = moving, bouncetime = 200) # bouncetime adds a debounce to the buttons
-GPIO.add_event_detect(7, GPIO.FALLING, callback = moving, bouncetime = 200) # bouncetime adds a debounce to the buttons
+GPIO.add_event_detect(8, GPIO.BOTH, callback = moving, bouncetime = 300) # bouncetime adds a debounce to the buttons
+GPIO.add_event_detect(7, GPIO.BOTH, callback = moving, bouncetime = 300) # bouncetime adds a debounce to the buttons
 
 try:
     while True:
