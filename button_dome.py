@@ -54,6 +54,7 @@ GPIO.setup(15, GPIO.OUT) # R2 relay
 GPIO.setup(16, GPIO.OUT) # R3 relay
 GPIO.setup(18, GPIO.OUT) # R4 relay
 
+#DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 # IR Sensor notch count function (prints the beam state and notch count)
 def print_IR_state(input):
     input = GPIO.input(36)
@@ -103,7 +104,7 @@ def emergency_stop(e_stop):
     python = sys.executable
     os.execl(python, python, *sys.argv)
 #GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
-
+#DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 
 # Motor functions:
 # Dome clockwise movement, set specific relays to high and low
