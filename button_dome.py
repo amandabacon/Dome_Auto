@@ -3,7 +3,7 @@
 #--------------------------------------------------------------------
 # Automation of Stickney Observatory pt 1                           -
 # button_dome.py - A program written to allow the use of buttons    -
-#  to control the dome's motion.                                   -
+#  to control the dome's motion.				    -
 # Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell -
 #--------------------------------------------------------------------
 
@@ -92,7 +92,7 @@ def restart(e_stop):
     print("Set relays to low")
     GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
     time.sleep(0.1) # allow for directional relays to switch before power_relays
-    GPIO.output(power_relays, (GPIO.HIGH,GPIO.LOW,GPIO.LOW)) # set relays R3,R4 to low simultaneously and keep R0,R00 high
+    GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
     os.system("sudo shutdown -r now") #sudo reboot
 GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 
@@ -103,7 +103,7 @@ def emergency_stop(e_stop):
     print("Stopping all systems.")
     GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
     time.sleep(0.1) # allow for directional relays to switch before power_relays
-    GPIO.output(power_relays, (GPIO.HIGH,GPIO.LOW,GPIO.LOW)) # set relays R3,R4 to low simultaneously and keep R0,R00 high
+    GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
     print("Restarting the program.")
     python = sys.executable
     os.execl(python, python, *sys.argv)
