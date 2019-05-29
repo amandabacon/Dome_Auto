@@ -48,11 +48,11 @@ GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home IR sensor
 # Relays Setup
 power_relays = (11,16,18) # allows for simultaneous pin manipulation, where 'power' means dome movement 
 directional_relays = (13,15) # allows for simultaneous pin manipulation, where 'directional' means setup of relays
-GPIO.setup(11, GPIO.OUT) # R0,R00 relay
-GPIO.setup(13, GPIO.OUT) # R1 relay
-GPIO.setup(15, GPIO.OUT) # R2 relay
-GPIO.setup(16, GPIO.OUT) # R3 relay
-GPIO.setup(18, GPIO.OUT) # R4 relay
+#GPIO.setup(11, GPIO.OUT) # R0,R00 relay
+#GPIO.setup(13, GPIO.OUT) # R1 relay
+#GPIO.setup(15, GPIO.OUT) # R2 relay
+#GPIO.setup(16, GPIO.OUT) # R3 relay
+#GPIO.setup(18, GPIO.OUT) # R4 relay
 
 #DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 # IR Sensor notch count function (prints the beam state and notch count)
@@ -84,10 +84,9 @@ GPIO.add_event_detect(36, GPIO.BOTH, callback = notch_counter) #waits for the se
 def restart(e_stop):
     e_stop = GPIO.input(22)
     print("Set relays to low")
-    GPIO.output(15, GPIO.LOW) #R2
-    GPIO.output(18, GPIO.LOW) #R4
-    GPIO.output(13, GPIO.LOW) #R1
-    GPIO.output(16, GPIO.LOW) #R3
+    GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+    time.sleep(0.1) # allow for directional relays to switch before power_relays
+    GPIO.output(power_relays, (GPIO.HIGH,GPIO.LOW,GPIO.LOW)) # set relays R3,R4 to low simultaneously and keep R0,R00 high
     os.system("sudo shutdown -r now") #sudo reboot
 GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 
@@ -96,10 +95,9 @@ GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 def emergency_stop(e_stop):
     e_stop = GPIO.input(22)
     print("Stopping all systems.")
-#    GPIO.output(15, GPIO.LOW) #R2
-#    GPIO.output(18, GPIO.LOW) #R4
-#    GPIO.output(13, GPIO.LOW) #R1
-#    GPIO.output(16, GPIO.LOW) #R3
+    GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+    time.sleep(0.1) # allow for directional relays to switch before power_relays
+    GPIO.output(power_relays, (GPIO.HIGH,GPIO.LOW,GPIO.LOW)) # set relays R3,R4 to low simultaneously and keep R0,R00 high
     print("Restarting the program.")
     python = sys.executable
     os.execl(python, python, *sys.argv)
