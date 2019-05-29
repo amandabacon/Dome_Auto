@@ -96,7 +96,6 @@ GPIO.add_event_detect(36, GPIO.BOTH, callback = notch_counter) #waits for the se
 #    os.system("sudo shutdown -r now") #sudo reboot
 #GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 
-# Alternative e stop code
 # When e stop button is pressed, set the relays to low and restart the code
 def emergency_stop(e_stop):
     e_stop = GPIO.input(22)
@@ -106,11 +105,11 @@ def emergency_stop(e_stop):
     GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
     print("Restarting the program.")
     python = sys.executable
-    os.execl(python, python, *sys.argv)
+#    os.execl(python, python, *sys.argv)
     os.execl(python, os.path.abspath(__file__), *sys.argv)
-    os.system('python "~/Dome/button_dome.py"')
+#    os.system('python "~/Dome/button_dome.py"')
     sys.exit(0)	
-GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
+GPIO.add_event_detect(22, GPIO.FALLING, callback = emergency_stop)
 #DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 
 # Error handling with buttons:
