@@ -25,7 +25,7 @@ This model is run and tested on Mac and Linux OS.
 -Flask html page that asks for a user input (azimuth) and moves the dome to the point using the IR beam break sensor notch count.  
 
 # How to Run Flask for Auto-Dome:
--In terminal, ssh'd into the pi type:
+-In terminal, ssh'd into the pi, type:
 ```
     export FLASK_APP=auto_dome.py
 ```
