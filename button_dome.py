@@ -87,17 +87,17 @@ GPIO.add_event_detect(36, GPIO.BOTH, callback = notch_counter) #waits for the se
 
 #E stop button--completely quits program instead of rebooting (need to put in /etc/rc.local file)
 #When e stop button is pressed, set the relays to low and restart the code
-def restart(e_stop):
-    e_stop = GPIO.input(22)
-    print("Set relays to low")
-    GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
-    time.sleep(0.1) # allow for directional relays to switch before power_relays
-    GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
-    os.system("sudo shutdown -r now") #sudo reboot
-GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
+#def restart(e_stop):
+#    e_stop = GPIO.input(22)
+#    print("Set relays to low")
+#    GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
+#    time.sleep(0.1) # allow for directional relays to switch before power_relays
+#    GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
+#    os.system("sudo shutdown -r now") #sudo reboot
+#GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 
-#Alternative e stop code
-#When e stop button is pressed, set the relays to low and restart the code
+# Alternative e stop code
+# When e stop button is pressed, set the relays to low and restart the code
 def emergency_stop(e_stop):
     e_stop = GPIO.input(22)
     print("Stopping all systems.")
@@ -107,7 +107,10 @@ def emergency_stop(e_stop):
     print("Restarting the program.")
     python = sys.executable
     os.execl(python, python, *sys.argv)
-#GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
+    os.execl(python, os.path.abspath(__file__), *sys.argv)
+    os.system('python "~/Dome/button_dome.py"')
+    sys.exit(0)	
+GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 #DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 
 # Error handling with buttons:
