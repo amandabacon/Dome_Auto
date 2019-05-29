@@ -20,12 +20,10 @@ This model is run and tested on Mac and Linux OS.
 
 -Error handling for IR sensors
 
-# Note for Dome people: How to run auto-dome
--In terminal, in the pi, in Dome directory
-
--type "export FLASK_APP=auto_dome.py"
-
--then type "flask run --host=0.0.0.0"
-
--then go to chrome and type in http://raspberrypi22.local:5000/static/go-dome.html
+# How to Run Flask for Auto-Dome:
+-In terminal, ssh'd into the pi type:
+    "export FLASK_APP=auto_dome.py"
+then type: 
+    "flask run --host=0.0.0.0"
+then go to chrome and type in http://raspberrypi22.local:5000/static/go-dome.html
 
