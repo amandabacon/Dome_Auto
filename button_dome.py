@@ -46,6 +46,12 @@ GPIO.setup(36, GPIO.IN, pull_up_down = GPIO.PUD_UP) #notch count IR sensor
 GPIO.setup(35, GPIO.IN, pull_up_down = GPIO.PUD_UP) #home IR sensor
 
 # Relays Setup
+pin_list = [11,13,15,16,18] # create list of relay GPIO pins
+
+# Set up GPIO pin list for relays
+for i in pin_list:
+	GPIO.setup(i, GPIO.OUT)
+
 power_relays = (11,16,18) # allows for simultaneous pin manipulation, where 'power' means dome movement 
 directional_relays = (13,15) # allows for simultaneous pin manipulation, where 'directional' means setup of relays
 #GPIO.setup(11, GPIO.OUT) # R0,R00 relay
