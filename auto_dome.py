@@ -76,7 +76,7 @@ def restart(e_stop):
     print("Set relays to low.")
     GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
     time.sleep(0.1) # allow for directional relays to switch before power_relays
-    GPIO.output(power_relays, (GPIO.HIGH,GPIO.LOW,GPIO.LOW)) # set relays R3,R4 to low simultaneously and keep R0,R00 high
+    GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
     os.system("sudo shutdown -r now") #sudo reboot
 #GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
 #DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
@@ -100,7 +100,7 @@ def go_counter_clockwise():
 def stop_motor():
     GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
     time.sleep(0.1) # allow for directional relays to switch before power_relays
-    GPIO.output(power_relays, (GPIO.HIGH,GPIO.LOW,GPIO.LOW)) # set relays R3,R4 to low simultaneously and keep R0,R00 high
+    GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
 #    print("Stopping motor.")
 
 # Get our azimuth input
@@ -149,12 +149,12 @@ def go_location():
         elif request.form['shutdown'] == 'Shut Down System':
             GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
             time.sleep(0.1) # allow for directional relays to switch before power_relays
-            GPIO.output(power_relays, (GPIO.HIGH,GPIO.LOW,GPIO.LOW)) # set relays R3,R4 to low simultaneously and keep R0,R00 high
+            GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
             return "Stopping motor. Shutting down."
         elif request.form['estop'] == 'Emergency Stop':
             GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
             time.sleep(0.1) # allow for directional relays to switch before power_relays
-            GPIO.output(power_relays, (GPIO.HIGH,GPIO.LOW,GPIO.LOW)) # set relays R3,R4 to low simultaneously and keep R0,R00 high
+            GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
             return "Everything has shut down."
 
 # Go home
