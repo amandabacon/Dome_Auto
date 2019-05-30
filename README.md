@@ -34,7 +34,9 @@ then type:
     flask run --host=0.0.0.0
 ```
 then go to chrome and type in http://domecontrol.bennington.edu:5000/static/go-dome.html (if you are on Bennington Secure)
+
 -or-
+
 go to chrome and type in http://raspberrypi22.local:5000/static/go-dome.html (if you are not on Bennington Secure)
 
 Sincerely, 
