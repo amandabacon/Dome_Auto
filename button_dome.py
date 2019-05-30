@@ -4,7 +4,7 @@
 # Automation of Stickney Observatory pt 1                           -
 # button_dome.py - A program written to allow the use of buttons    -
 #  to control the dome's motion.				    -
-# Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell -
+# Author(s): Amanda Bacon, Emma Salazar, Anna McNiff, Josie Bunnell -
 #--------------------------------------------------------------------
 
 # Import modules for our program
