@@ -4,7 +4,7 @@
 # Automation of Stickney Observatory pt 2                           -
 # auto_dome.py - A program written to allow the use of a user       -
 #  interface to control the dome's motion.                          -
-# Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell -
+# Author(s): Amanda Bacon, Emma Salazar, Anna McNiff, Josie Bunnell -
 # THIS CODE DOES NOT WORK. IT NEEDS TO BE FIXED AND DEBUGGED.       -
 #--------------------------------------------------------------------
 
