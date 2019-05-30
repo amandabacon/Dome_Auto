@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 #------------------------------------------------------------------------
-#Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell      -
+#Author(s): Amanda Bacon, Emma Salazar, Anna McNiff, Josie Bunnell      -
 #Automation of Stickney Observatory pinout information                  -
 #------------------------------------------------------------------------
 
