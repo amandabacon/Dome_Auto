@@ -38,6 +38,7 @@ then go to chrome and type in http://domecontrol.bennington.edu:5000/static/go-d
 go to chrome and type in http://raspberrypi22.local:5000/static/go-dome.html (if you are not on Bennington Secure)
 
 Sincerely, 
+
 :rage: :dancer: :snail: :dog: 
 
 :mortar_board:
