@@ -5,6 +5,7 @@
 # auto_dome.py - A program written to allow the use of a user       -
 #  interface to control the dome's motion.                          -
 # Author(s): Amanda Bacon, Anna McNiff, Emma Salazar, Josie Bunnell -
+# THIS CODE DOES NOT WORK. IT NEEDS TO BE FIXED AND DEBUGGED.       -
 #--------------------------------------------------------------------
 
 # Import modules for our program
@@ -57,7 +58,6 @@ directional_relays = (13,15) # allows for simultaneous pin manipulation, where '
 #GPIO.setup(16, GPIO.OUT) # R3 relay
 #GPIO.setup(18, GPIO.OUT) # R4 relay
 
-#DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
 # Functions:
 # IR beam break sensor notch count function (returns notch count and does not print anything)
 def notch_counter(input):
@@ -66,20 +66,24 @@ def notch_counter(input):
     global notches
     if input != 0 and direction_relays == False: # the sensor is in a notch hole, and the dome is moving clockwise
         notches = notches + 1
-    if input != 0 and direction_relay == True: # the sensor is in a notch hole, and the dome is moving counter clockwise
+    elif input != 0 and direction_relay == True: # the sensor is in a notch hole, and the dome is moving counter clockwise
         notches = notches - 1 # thereby subtracting from the notch count
 GPIO.add_event_detect(36, GPIO.BOTH, callback = notch_counter) # waits for the sensor to sense a change in input
 
-#E stop button--completely quits program instead of rebooting (need to put in /etc/rc.local file)
-def restart(e_stop):
+# When e stop button is pressed, set the relays to low and restart the code
+def emergency_stop(e_stop):
     e_stop = GPIO.input(22)
-    print("Set relays to low.")
+    print("Stopping all systems.")
     GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
     time.sleep(0.1) # allow for directional relays to switch before power_relays
     GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
-    os.system("sudo shutdown -r now") #sudo reboot
-#GPIO.add_event_detect(22, GPIO.FALLING, callback = restart)
-#DID NOT COMMENT THESE BECAUSE HAVE QUESTIONS
+    print("Restarting the program.")
+    python = sys.executable
+#    os.execl(python, python, *sys.argv)
+    os.execl(python, os.path.abspath(__file__), *sys.argv)
+#    os.system('python "~/Dome/button_dome.py"')
+    sys.exit(0)	
+GPIO.add_event_detect(22, GPIO.FALLING, callback = emergency_stop)
 
 # Error handling with buttons:
 def error_handle():
@@ -123,10 +127,10 @@ def go_clockwise():
 #    print("Moving clockwise.")
 
 # Dome counter clockwise movement
-def go_counter_clockwise():
-    GPIO.output(directional_relays, GPIO.HIGH)  #set relays R1 and R2 to high simultaneously
-    time.sleep(0.1) #allow for directional relays to switch before power_relays
-    GPIO.output(power_relays, GPIO.HIGH) # set relays R0,R00,R3,R4 to high simultaneously
+#def go_counter_clockwise():
+#    GPIO.output(directional_relays, GPIO.HIGH)  #set relays R1 and R2 to high simultaneously
+#    time.sleep(0.1) #allow for directional relays to switch before power_relays
+#    GPIO.output(power_relays, GPIO.HIGH) # set relays R0,R00,R3,R4 to high simultaneously
 #    print("Moving counter clockwise.")
 
 # Stop the motor
@@ -142,11 +146,12 @@ def get_azimuth(user_input):
     return user_azimuth
 
 # Go to our location given user input from an html page
-@app.route("/next-location", methods=['POST'])
+@app.route("/next-location", methods=['POST', 'GET'])
 def go_location():
-    go_location_string = '<html>\n <head><title>Welcome to the Stickney Observatory Dome Control</title>\n </head>\n <body>\n \n Hello user. What azimuth is the telescope going to?\n <form action="http://raspberrypi23.local:5000/next-location" method="POST">\n <br>\n Azimuth:\n <input type="number" name="azimuth">\n <input type="submit" name="go" value="Go">\n <br>\n Do you want to go home?\n <input type="submit" name="home" value="Go Home">\n <br>\n Are you finished using the dome?\n <input type="submit" name="shutdown" value="Shut Down System">\n <br>\n Emergency Stop\n <input type="submit" name="estop" value="Emergency Stop">\n <br>\n \n </form>\n </body>\n </html>'
+    go_location_string = '<html>\n <head><title>Welcome to the Stickney Observatory Dome Control</title>\n </head>\n <body>\n \n Hello user. What azimuth is the telescope going to?\n <form action="http://domecontrol.bennington.edu:5000/next-location" method="POST">\n <br>\n Azimuth:\n <input type="number" name="azimuth">\n <input type="submit" name="go" value="Go">\n <br>\n Do you want to go home?\n <input type="submit" name="home" value="Go Home">\n <br>\n Are you finished using the dome?\n <input type="submit" name="shutdown" value="Shut Down System">\n <br>\n Emergency Stop\n <input type="submit" name="estop" value="Emergency Stop">\n <br>\n \n </form>\n </body>\n </html>'
     if request.method == 'POST':
         if request.form['go'] == 'Go':
+            print(request.form)
             try:
                 azimuth_value = int(request.form['azimuth'])
                 if azimuth_value > 360:
@@ -178,6 +183,7 @@ def go_location():
 #            while home_sensor != 0:
 #                go_clockwise()
 #            stop_motor()
+            print("test test test")
             return "At home position."
         elif request.form['shutdown'] == 'Shut Down System':
             GPIO.output(directional_relays, GPIO.LOW)  # set relays R1 and R2 to low simultaneously
@@ -189,6 +195,9 @@ def go_location():
             time.sleep(0.1) # allow for directional relays to switch before power_relays
             GPIO.output(power_relays, GPIO.LOW) # set relays R0,R00,R3,R4 to low simultaneously
             return "Everything has shut down."
+        else:
+            print("crap")
+            return "crap"
 
 # Go home
 #def go_home():
